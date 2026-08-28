@@ -6,6 +6,10 @@ const js = await readFile("src/site.js", "utf8");
 const itineraryHub = await readFile("pages/itineraries.html", "utf8");
 const itineraryDetail = await readFile("pages/sydney-5n6d.html", "utf8");
 const itineraryJs = await readFile("src/itineraries.js", "utf8");
+const areasHub = await readFile("pages/areas.html", "utf8");
+const circularQuay = await readFile("pages/circular-quay.html", "utf8");
+const operaHouse = await readFile("pages/sydney-opera-house.html", "utf8");
+const areasCss = await readFile("styles-areas.css", "utf8");
 const assertions = [
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
@@ -25,6 +29,13 @@ const assertions = [
   [itineraryDetail.includes("처음 가는 시드니") && itineraryDetail.includes('"@type":"Article"'), "5n6d detail content and schema"],
   [itineraryDetail.match(/<h1>/g)?.length === 1 && itineraryHub.match(/<h1>/g)?.length === 1, "one H1 per itinerary page"],
   [itineraryJs.includes('typeof document !== "undefined"'), "itinerary browser bootstrap is guarded"],
+  [areasHub.match(/<h1>/g)?.length === 1 && circularQuay.match(/<h1>/g)?.length === 1 && operaHouse.match(/<h1>/g)?.length === 1, "one H1 per area page"],
+  [areasHub.includes("ItemList") && circularQuay.includes('"@type":"Place"') && operaHouse.includes('"@type":"TouristAttraction"'), "area structured data"],
+  [circularQuay.includes('"@type":"FAQPage"') && operaHouse.includes('"@type":"FAQPage"'), "visible FAQ schema"],
+  [circularQuay.includes("transportnsw.info") && operaHouse.includes("sydneyoperahouse.com"), "official source buttons"],
+  [areasHub.includes("상세 콘텐츠 준비 중") && !areasHub.includes('/areas/the-rocks'), "no fabricated detail routes"],
+  [areasCss.includes("aspect-ratio:16/9") && areasCss.includes("aspect-ratio:3/2") && areasCss.includes("aspect-ratio:4/3"), "varied area image ratios"],
+  [!areasHub.includes("document.") && !circularQuay.includes("document.") && !operaHouse.includes("document."), "area HTML has no server-side browser execution"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);
@@ -35,3 +46,4 @@ await access("public/favicon.svg");
 await access("robots.txt");
 await access("sitemap.xml");
 console.log("✓ social preview and SEO files");
+
