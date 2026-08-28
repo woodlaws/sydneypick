@@ -7,7 +7,6 @@
     "dev": "node scripts/preview.mjs",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/preview.mjs --root dist",
-    "start": "npm run preview",
     "check": "node scripts/check.mjs"
   }
 }
