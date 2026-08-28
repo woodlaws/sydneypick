@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#063b43" />
+    <meta name="description" content="일정, 동선, 명소, 맛집, 교통, 숙소와 예산을 한 번에 정리하는 시드니 자유여행 플래너" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sydmate — 내 취향대로 걷는 시드니" />
+    <meta property="og:description" content="검색은 그만. 일정·동선·예산을 한 번에 정리해 시드니답게 걸어요." />
+    <meta property="og:image" content="__OG_IMAGE__" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sydmate — 내 취향대로 걷는 시드니" />
+    <meta name="twitter:description" content="검색은 그만. 일정·동선·예산을 한 번에 정리해 시드니답게 걸어요." />
+    <meta name="twitter:image" content="__OG_IMAGE__" />
+    <title>Sydmate — 내 취향대로 걷는 시드니</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Sydmate 홈"><span class="brand-mark">S</span> sydmate</a>
+      <a class="top-link" href="#planner">내 일정 만들기 <span>↘</span></a>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> SYDNEY, SORTED.</p>
+          <h1>검색은 그만.<br /><em>시드니답게</em> 걷자.</h1>
+          <p class="hero-lead">낭비 없는 동선부터 진짜 쓸 예산까지,<br />처음 가도 헤매지 않는 자유여행을 설계해요.</p>
+          <a class="primary-button" href="#planner">30초 만에 코스 만들기 <span>→</span></a>
+          <p class="trust"><span>✓</span> 가입 없이 바로 시작 · 무료</p>
+        </div>
+        <div class="hero-art" aria-label="시드니 하버를 모티브로 한 그래픽">
+          <div class="sun"></div>
+          <p class="art-label">33.8688° S<br />151.2093° E</p>
+          <div class="sail sail-one"></div>
+          <div class="sail sail-two"></div>
+          <div class="sail sail-three"></div>
+          <div class="water-lines"><span></span><span></span><span></span></div>
+          <p class="art-note">harbour days,<br />ocean ways.</p>
+        </div>
+      </section>
+
+      <section class="planner" id="planner">
+        <div class="section-heading">
+          <p class="eyebrow dark"><span></span> YOUR TRIP, YOUR RHYTHM</p>
+          <h2>딱 맞는 하루부터<br />골라볼까요?</h2>
+        </div>
+        <div class="planner-card">
+          <div class="form-block">
+            <div class="step-label"><span>01</span> 여행 기간</div>
+            <div class="choice-row" role="group" aria-label="여행 기간">
+              <button data-days="2">2일</button><button class="selected" data-days="3">3일</button><button data-days="4">4일</button><button data-days="5">5일+</button>
+            </div>
+          </div>
+          <div class="form-block">
+            <div class="step-label"><span>02</span> 놓치고 싶지 않은 것</div>
+            <div class="tag-row" role="group" aria-label="여행 취향">
+              <button class="active" data-style="icon">📷 아이코닉</button>
+              <button data-style="ocean">🌊 바다</button>
+              <button data-style="food">🍜 로컬 맛집</button>
+              <button data-style="slow">🌿 여유</button>
+            </div>
+          </div>
+          <button class="make-plan" id="make-plan">이대로 내 코스 보기 <span>→</span></button>
+          <p class="planner-hint">선택에 맞춰 아래 일정과 예상 경비가 바로 바뀌어요.</p>
+        </div>
+      </section>
+
+      <section class="itinerary" id="itinerary">
+        <div class="itinerary-head">
+          <div>
+            <p class="eyebrow light"><span></span> READY-TO-WALK PLAN</p>
+            <h2><span id="plan-days">3</span>일이면, 이 순서가<br />가장 시드니답습니다.</h2>
+          </div>
+          <div class="estimate">
+            <span>1인 현지 예상</span>
+            <strong id="budget-total">A$330–450</strong>
+            <small>숙박 · 항공 제외</small>
+          </div>
+        </div>
+        <div class="timeline" id="timeline" aria-live="polite"></div>
+        <div class="route-rule"><span>동선 원칙</span><p>하루에 한 권역만. 동쪽 해변과 북쪽 해변을 같은 날 묶지 않아요.</p></div>
+      </section>
+
+      <section class="essentials" id="essentials">
+        <div class="section-heading wide">
+          <p class="eyebrow dark"><span></span> THE SHORT ANSWERS</p>
+          <h2>검색창을 닫게 해줄<br />네 가지 빠른 답.</h2>
+        </div>
+        <div class="answer-grid">
+          <article class="answer-card coral">
+            <div class="answer-top"><span>01</span><b>교통</b></div>
+            <h3>오팔 카드 없어도<br />휴대폰이면 끝.</h3>
+            <p>해외 결제 가능한 카드나 모바일 지갑 하나를 모든 교통수단에서 같은 방식으로 태그하세요.</p>
+            <div class="fact"><strong>A$19.30</strong><span>월–목 성인 일일 상한<br />금–일·공휴일 A$9.65</span></div>
+          </article>
+          <article class="answer-card sky">
+            <div class="answer-top"><span>02</span><b>숙소</b></div>
+            <h3>첫 여행이면<br />Town Hall 반경.</h3>
+            <p>공항·하버·해변 방향이 모두 편합니다. 밤 분위기는 Surry Hills, 바다 우선이면 Bondi를 선택하세요.</p>
+            <div class="mini-map" aria-hidden="true"><i>CBD</i><i>Surry<br />Hills</i><i>Bondi</i><span></span></div>
+          </article>
+          <article class="answer-card cream">
+            <div class="answer-top"><span>03</span><b>예산</b></div>
+            <h3>하루 A$110부터<br />현실적으로.</h3>
+            <ul class="budget-list"><li><span>식사 2회 + 카페</span><b>A$55–75</b></li><li><span>대중교통</span><b>A$10–20</b></li><li><span>유료 경험</span><b>A$0–60</b></li></ul>
+          </article>
+          <article class="answer-card ink">
+            <div class="answer-top"><span>04</span><b>공항</b></div>
+            <h3>빠르면 기차,<br />2–3명이면 택시 비교.</h3>
+            <p>공항역은 일반 운임에 성인 A$18.61의 역 이용료가 추가됩니다. 일행과 짐이 많다면 차량 호출 요금도 확인하세요.</p>
+            <a href="https://transportnsw.info/travel-info/using-public-transport/getting-to-airport" target="_blank" rel="noreferrer">공식 안내 보기 ↗</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="eat-stay" id="eat-stay">
+        <div class="section-heading centered">
+          <p class="eyebrow dark"><span></span> EAT & STAY BY AREA</p>
+          <h2>맛집 이름보다<br />동네를 먼저 고르세요.</h2>
+          <p>줄 서는 한 곳보다, 오늘 동선에 맞는 한 끼가 여행을 살립니다.</p>
+        </div>
+        <div class="districts">
+          <article class="district active">
+            <div class="district-index">01</div><div><p>도심 첫날</p><h3>CBD · The Rocks</h3><span>하버뷰 / 역사 산책 / 접근성</span></div><button aria-label="CBD 상세 보기">↗</button>
+          </article>
+          <article class="district">
+            <div class="district-index">02</div><div><p>브런치와 밤</p><h3>Surry Hills</h3><span>스페셜티 커피 / 와인 바 / 로컬 무드</span></div><button aria-label="Surry Hills 상세 보기">↗</button>
+          </article>
+          <article class="district">
+            <div class="district-index">03</div><div><p>해변의 아침</p><h3>Bondi · Coogee</h3><span>브런치 / 코스탈 워크 / 일출</span></div><button aria-label="Bondi 상세 보기">↗</button>
+          </article>
+          <article class="district">
+            <div class="district-index">04</div><div><p>페리로 떠나는 하루</p><h3>Manly</h3><span>피시 앤 칩스 / 셸리 비치 / 석양</span></div><button aria-label="Manly 상세 보기">↗</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="before-you-go">
+        <div class="check-copy">
+          <p class="eyebrow"><span></span> BEFORE YOU TAP ON</p>
+          <h2>출발 전,<br />이것만 저장.</h2>
+        </div>
+        <div class="checklist">
+          <label><input type="checkbox" /><span><b>결제 카드 1장 고정</b><small>같은 카드로 탭 온 · 탭 오프</small></span></label>
+          <label><input type="checkbox" /><span><b>Opal Travel 앱</b><small>실시간 교통과 운임 확인</small></span></label>
+          <label><input type="checkbox" /><span><b>해변 날씨 재확인</b><small>바람 강하면 하버 일정과 교체</small></span></label>
+          <label><input type="checkbox" /><span><b>오프라인 지도 저장</b><small>CBD · Bondi · Manly 세 구역</small></span></label>
+        </div>
+      </section>
+      <section class="source-note">
+        <p>교통 요금은 2026년 8월 확인 기준이며 변동될 수 있어요.</p>
+        <div><a href="https://transportnsw.info/tickets-fares/fares/adult-opal-fares" target="_blank" rel="noreferrer">Transport for NSW 운임 ↗</a><a href="https://www.sydney.com/destinations" target="_blank" rel="noreferrer">Destination NSW 지역 안내 ↗</a></div>
+      </section>
+    </main>
+    <footer><a class="brand" href="#top"><span class="brand-mark">S</span> sydmate</a><p>여행은 더 가볍게,<br />기억은 더 선명하게.</p><a href="#planner">내 시드니 시작하기 ↑</a></footer>
+    <nav class="mobile-dock" aria-label="모바일 빠른 메뉴"><a href="#itinerary">일정</a><a href="#essentials">여행팁</a><a class="dock-primary" href="#planner">코스 만들기</a></nav>
+    <script src="/app.js" defer></script>
+  </body>
+</html>
