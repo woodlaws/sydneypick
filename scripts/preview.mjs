@@ -20,9 +20,16 @@ createServer(async (request, response) => {
     return;
   }
   try {
-    let body = await readFile(target);
-    if (extname(target) === ".html") body = Buffer.from(body.toString().replaceAll("__OG_IMAGE__", `http://${request.headers.host}/public/og.png`));
-    response.writeHead(200, { "content-type": types[extname(target)] || "application/octet-stream" });
+    const candidates = extname(target) ? [target] : [target, `${target}.html`, join(target, "index.html")];
+    let served;
+    for (const candidate of candidates) {
+      try { served = { candidate, body: await readFile(candidate) }; break; } catch {}
+    }
+    if (!served) throw new Error("Not found");
+    let { body } = served;
+    const extension = extname(served.candidate);
+    if (extension === ".html") body = Buffer.from(body.toString().replaceAll("__OG_IMAGE__", `http://${request.headers.host}/public/og.png`));
+    response.writeHead(200, { "content-type": types[extension] || "application/octet-stream" });
     response.end(body);
   } catch {
     try {

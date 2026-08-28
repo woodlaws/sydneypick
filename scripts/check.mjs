@@ -3,6 +3,9 @@ import { readFile, access } from "node:fs/promises";
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
 const js = await readFile("src/site.js", "utf8");
+const itineraryHub = await readFile("pages/itineraries.html", "utf8");
+const itineraryDetail = await readFile("pages/sydney-5n6d.html", "utf8");
+const itineraryJs = await readFile("src/itineraries.js", "utf8");
 const assertions = [
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
@@ -18,6 +21,10 @@ const assertions = [
   [js.includes("siteContent") && js.includes("renderPlan"), "structured interactive content"],
   [html.includes('/assets/site.js') && !html.includes('/app.js'), "browser code is loaded only from static assets"],
   [js.includes('typeof document !== "undefined"'), "browser bootstrap is guarded from server imports"],
+  [itineraryHub.includes("내 여행에 맞는") && itineraryHub.includes("ItemList"), "itinerary hub content and schema"],
+  [itineraryDetail.includes("처음 가는 시드니") && itineraryDetail.includes('"@type":"Article"'), "5n6d detail content and schema"],
+  [itineraryDetail.match(/<h1>/g)?.length === 1 && itineraryHub.match(/<h1>/g)?.length === 1, "one H1 per itinerary page"],
+  [itineraryJs.includes('typeof document !== "undefined"'), "itinerary browser bootstrap is guarded"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);
