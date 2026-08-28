@@ -1,5 +1,6 @@
 import { readFile, access } from "node:fs/promises";
 import { areaGuides, renderAreaGuide } from "./area-guides.mjs";
+import { travelPrepPages, renderTravelPrepHub, renderTravelPrepPage } from "./travel-prep-pages.mjs";
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
@@ -12,6 +13,9 @@ const circularQuay = await readFile("pages/circular-quay.html", "utf8");
 const operaHouse = await readFile("pages/sydney-opera-house.html", "utf8");
 const areasCss = await readFile("styles-areas.css", "utf8");
 const generatedAreaPages = areaGuides.map(renderAreaGuide);
+const prepHub = renderTravelPrepHub();
+const generatedPrepPages = travelPrepPages.map(renderTravelPrepPage);
+const prepJs = await readFile("src/travel-prep.js", "utf8");
 const assertions = [
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
@@ -45,6 +49,15 @@ const assertions = [
   [generatedAreaPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "updates and official sources"],
   [areasHub.includes('/areas/the-rocks') && areasHub.includes('/areas/bondi-beach') && areasHub.includes('/areas/manly') && areasHub.includes('/areas/blue-mountains'), "area hub links all new guides"],
   [itineraryDetail.includes('/areas/the-rocks') && itineraryDetail.includes('/areas/bondi-beach') && itineraryDetail.includes('/areas/manly') && itineraryDetail.includes('/areas/blue-mountains'), "5n6d links all new guides"],
+  [travelPrepPages.length === 5 && new Set(travelPrepPages.map((page) => page.slug)).size === 5, "five unique travel-prep detail routes"],
+  [(prepHub.match(/<h1>/g) || []).length === 1 && generatedPrepPages.every((page) => (page.match(/<h1>/g) || []).length === 1), "one H1 per travel-prep page"],
+  [generatedPrepPages.every((page) => page.includes("BreadcrumbList") && page.includes('"@type":"FAQPage"')), "travel-prep breadcrumb and visible FAQ schema"],
+  [generatedPrepPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "travel-prep update dates and sources"],
+  [prepHub.includes("10단계") && prepHub.includes("data-prep-check") && prepHub.includes("/travel-prep/checklist"), "travel-prep hub steps and local checklist"],
+  [prepJs.includes('typeof document !== "undefined"') && prepJs.includes("localStorage") && !prepJs.includes("fetch("), "travel-prep browser code is guarded and local only"],
+  [generatedPrepPages.find((page) => page.includes("준비물 체크리스트"))?.includes("data-custom-item-form"), "custom checklist item support"],
+  [html.includes('href="/travel-prep"'), "homepage links travel-prep hub"],
+  [itineraryDetail.includes('/travel-prep/airport-to-city') && itineraryDetail.includes('/travel-prep/opal-card') && itineraryDetail.includes('/travel-prep/esim') && itineraryDetail.includes('/travel-prep/money-payment'), "5n6d links travel-prep guides"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);
@@ -55,4 +68,3 @@ await access("public/favicon.svg");
 await access("robots.txt");
 await access("sitemap.xml");
 console.log("✓ social preview and SEO files");
-

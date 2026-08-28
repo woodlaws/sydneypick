@@ -32,9 +32,9 @@
     <header class="site-header">
       <a class="brand" href="#top" aria-label="시드니픽 홈"><strong>SYDNEY PICK</strong><span>시드니픽</span></a>
       <button class="menu-toggle" aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span></button>
-      <nav class="desktop-nav" aria-label="주요 메뉴"><a href="/itineraries">여행 일정</a><a href="/areas">지역별 픽</a><a href="#food">맛집·카페</a><a href="#prepare">여행 준비</a><a href="#shopping">쇼핑픽</a><a href="#magazine">픽 매거진</a></nav>
+      <nav class="desktop-nav" aria-label="주요 메뉴"><a href="/itineraries">여행 일정</a><a href="/areas">지역별 픽</a><a href="#food">맛집·카페</a><a href="/travel-prep">여행 준비</a><a href="#shopping">쇼핑픽</a><a href="#magazine">픽 매거진</a></nav>
       <a class="guide-button" href="#guide">무료 여행 가이드 <span>→</span></a>
-      <nav class="mobile-menu" aria-label="모바일 메뉴"><a href="/itineraries">여행 일정</a><a href="/areas">지역별 픽</a><a href="#prepare">여행 준비</a><a href="#food">맛집·카페</a><a href="#shopping">쇼핑픽</a><a href="#magazine">픽 매거진</a><a href="#guide">무료 여행 가이드</a></nav>
+      <nav class="mobile-menu" aria-label="모바일 메뉴"><a href="/itineraries">여행 일정</a><a href="/areas">지역별 픽</a><a href="/travel-prep">여행 준비</a><a href="#food">맛집·카페</a><a href="#shopping">쇼핑픽</a><a href="#magazine">픽 매거진</a><a href="#guide">무료 여행 가이드</a></nav>
     </header>
 
     <main id="content">
@@ -52,7 +52,7 @@
       </section>
 
       <nav class="quick-nav" aria-label="빠른 탐색">
-        <a href="#schedule"><b>01</b><span>여행 일정</span></a><a href="/areas"><b>02</b><span>지역별 픽</span></a><a href="#food"><b>03</b><span>맛집·카페</span></a><a href="#prepare"><b>04</b><span>여행 준비</span></a><a href="#shopping"><b>05</b><span>쇼핑픽</span></a><a href="#magazine"><b>06</b><span>픽 매거진</span></a>
+        <a href="#schedule"><b>01</b><span>여행 일정</span></a><a href="/areas"><b>02</b><span>지역별 픽</span></a><a href="#food"><b>03</b><span>맛집·카페</span></a><a href="/travel-prep"><b>04</b><span>여행 준비</span></a><a href="#shopping"><b>05</b><span>쇼핑픽</span></a><a href="#magazine"><b>06</b><span>픽 매거진</span></a>
       </nav>
 
       <section class="section schedule-section" id="schedule" data-search="일정 코스 3박 4박 5박 6일 7박">
@@ -90,13 +90,13 @@
         <div class="wrap prepare-layout">
           <div class="prepare-copy"><p class="section-kicker">BEFORE YOU FLY</p><h2>출발 전,<br />일곱 가지만.</h2><p>필수 준비를 차근차근 완료해 보세요. 체크 상태는 이 기기에만 저장됩니다.</p><button class="text-button" id="reset-checklist" type="button">체크 초기화 ↻</button></div>
           <div class="check-grid">
-            <label><input type="checkbox" data-check="passport" /><span class="check-icon">01</span><b>여권·입국 조건</b><small>유효기간과 최신 입국 요건 확인</small></label>
-            <label><input type="checkbox" data-check="flight" /><span class="check-icon">02</span><b>항공권</b><small>수하물 규정과 터미널 확인</small></label>
-            <label><input type="checkbox" data-check="payment" /><span class="check-icon">03</span><b>결제 수단</b><small>해외 결제 카드와 예비 수단</small></label>
-            <label><input type="checkbox" data-check="sim" /><span class="check-icon">04</span><b>유심·통신</b><small>로밍, eSIM, 현지 SIM 비교</small></label>
-            <label><input type="checkbox" data-check="transport" /><span class="check-icon">05</span><b>교통</b><small>동일 결제수단으로 탭 온·오프</small></label>
-            <label><input type="checkbox" data-check="insurance" /><span class="check-icon">06</span><b>여행자 보험</b><small>보장 범위와 연락처 저장</small></label>
-            <label><input type="checkbox" data-check="bag" /><span class="check-icon">07</span><b>짐 싸기</b><small>계절·해변·도보 일정에 맞춰 준비</small></label>
+            <label><input type="checkbox" data-check="passport" /><span class="check-icon">01</span><b>여권·입국 조건</b><small>유효기간과 최신 입국 요건 확인</small><a href="/travel-prep">준비 순서 보기 →</a></label>
+            <label><input type="checkbox" data-check="flight" /><span class="check-icon">02</span><b>공항 이동</b><small>수하물과 도착 터미널 확인</small><a href="/travel-prep/airport-to-city">이동수단 비교 →</a></label>
+            <label><input type="checkbox" data-check="payment" /><span class="check-icon">03</span><b>결제 수단</b><small>해외 결제 카드와 예비 수단</small><a href="/travel-prep/money-payment">환전·결제 가이드 →</a></label>
+            <label><input type="checkbox" data-check="sim" /><span class="check-icon">04</span><b>유심·통신</b><small>로밍, eSIM, 현지 SIM 비교</small><a href="/travel-prep/esim">통신 방식 비교 →</a></label>
+            <label><input type="checkbox" data-check="transport" /><span class="check-icon">05</span><b>교통</b><small>동일 결제수단으로 탭 온·오프</small><a href="/travel-prep/opal-card">오팔카드 가이드 →</a></label>
+            <label><input type="checkbox" data-check="insurance" /><span class="check-icon">06</span><b>여행자 보험</b><small>보장 범위와 연락처 저장</small><a href="/travel-prep">전체 준비 단계 →</a></label>
+            <label><input type="checkbox" data-check="bag" /><span class="check-icon">07</span><b>짐 싸기</b><small>계절·해변·도보 일정에 맞춰 준비</small><a href="/travel-prep/checklist">준비물 체크 →</a></label>
           </div>
         </div>
       </section>
@@ -153,7 +153,7 @@
         <div class="footer-brand"><a class="brand" href="#top"><strong>SYDNEY PICK</strong><span>시드니픽</span></a><p>한국인을 위한 시드니 자유여행 가이드.<br />더 적게 헤매고, 더 오래 기억하세요.</p><a href="https://sydneypick.com">sydneypick.com</a></div>
         <nav aria-label="푸터 여행 일정"><strong>여행 일정</strong><a href="#schedule">3박 4일</a><a href="#schedule">4박 5일</a><a href="#schedule">5박 6일</a><a href="#schedule">7박 8일</a></nav>
         <nav aria-label="푸터 지역별 픽"><strong>지역별 픽</strong><a href="#areas">서큘러 키</a><a href="#areas">더 록스</a><a href="#areas">본다이 비치</a><a href="#areas">맨리</a><a href="#areas">블루마운틴</a></nav>
-        <nav aria-label="푸터 여행 준비"><strong>여행 준비</strong><a href="#prepare">체크리스트</a><a href="#food">맛집·카페</a><a href="#shopping">쇼핑픽</a><a href="#sdf">SDF</a></nav>
+        <nav aria-label="푸터 여행 준비"><strong>여행 준비</strong><a href="/travel-prep">준비 가이드</a><a href="/travel-prep/checklist">체크리스트</a><a href="#shopping">쇼핑픽</a><a href="#sdf">SDF</a></nav>
         <nav aria-label="푸터 콘텐츠"><strong>PICK 매거진</strong><a href="#magazine">여행 가이드</a><a href="#magazine">교통</a><a href="#magazine">지역</a><a href="#guide">무료 가이드</a></nav>
       </div>
       <div class="wrap footer-bottom"><p>© 2026 SYDNEY PICK. 여행 정보는 변경될 수 있으므로 예약·방문 전 공식 채널을 확인하세요.</p><div><a href="https://www.sydney.com/" target="_blank" rel="noreferrer">Destination NSW</a><a href="https://transportnsw.info/" target="_blank" rel="noreferrer">Transport for NSW</a></div></div>
@@ -162,4 +162,3 @@
     <script src="/assets/site.js" defer></script>
   </body>
 </html>
-
