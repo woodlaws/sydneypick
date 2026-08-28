@@ -4,8 +4,7 @@ const siteContent = {
     5: { name: "4박 5일 · 시드니 & 근교", summary: "대표 지역에 블루마운틴 하루를 더해", days: ["하버 아이콘", "본다이 코스트", "맨리 페리", "블루마운틴", "도심 & 출국"] },
     6: { name: "5박 6일 · FIRST PICK", summary: "하버, 해변, 로컬 동네, 근교 자연을 한 번씩 충분히", days: ["하버 아이콘", "본다이 코스트", "맨리 페리", "로컬 동네", "블루마운틴", "마지막 쇼핑 & 출국"] },
     8: { name: "7박 8일 · 여유 코스", summary: "시드니와 주변 지역을 느린 호흡으로", days: ["하버 아이콘", "본다이 코스트", "맨리 페리", "로컬 동네", "블루마운틴", "남부 해안", "자유 일정", "마지막 쇼핑 & 출국"] }
-  },
-  searchAliases: { "본다이": "areas", "맨리": "areas", "블루마운틴": "areas", "일정": "schedule", "교통": "prepare", "맛집": "food", "카페": "food", "쇼핑": "shopping", "면세": "sdf", "가이드": "guide" }
+  }
 };
 
 function initSite() {
@@ -40,19 +39,13 @@ const searchForm = document.querySelector(".hero-search");
 const searchStatus = document.querySelector(".search-status");
 searchForm?.addEventListener("submit", (event) => {
   event.preventDefault();
-  const query = String(new FormData(searchForm).get("q") || "").trim().toLowerCase();
+  const query = String(new FormData(searchForm).get("q") || "").trim();
   if (!query) {
     searchStatus.textContent = "찾고 싶은 지역이나 주제를 입력해주세요.";
     return;
   }
-  const alias = Object.entries(siteContent.searchAliases).find(([key]) => query.includes(key));
-  const target = alias ? document.querySelector(`#${alias[1]}`) : [...document.querySelectorAll("[data-search]")].find((element) => element.dataset.search.toLowerCase().includes(query));
-  if (target) {
-    searchStatus.textContent = `“${query}” 관련 섹션으로 이동합니다.`;
-    target.scrollIntoView({ behavior: "smooth" });
-  } else {
-    searchStatus.textContent = "관련 섹션을 찾지 못했어요. 일정, 지역, 맛집, 교통처럼 검색해보세요.";
-  }
+  searchStatus.textContent = `“${query}” 매거진 검색 결과로 이동합니다.`;
+  window.location.assign(`/magazine/search?q=${encodeURIComponent(query)}`);
 });
 
 const savedChecks = JSON.parse(localStorage.getItem("sydneyPickChecklist") || "{}");

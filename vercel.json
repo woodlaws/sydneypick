@@ -6,7 +6,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/favicon.ico", "destination": "/public/favicon.svg" },
-    { "source": "/:path*", "destination": "/index.html" }
+    { "source": "/favicon.ico", "destination": "/public/favicon.svg" }
   ]
 }

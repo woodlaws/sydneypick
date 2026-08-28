@@ -3,6 +3,7 @@ import { areaGuides, renderAreaGuide } from "./area-guides.mjs";
 import { travelPrepPages, renderTravelPrepHub, renderTravelPrepPage } from "./travel-prep-pages.mjs";
 import { foodPages, restaurantFieldSchema, restaurantRecords, renderFoodHub, renderFoodPage } from "./food-pages.mjs";
 import { shoppingPages, shoppingProductSchema, shoppingProducts, sdfStoreData, renderShoppingHub, renderShoppingPage } from "./shopping-pages.mjs";
+import { loadMagazinePosts, magazineCategories, renderMagazineHub, renderMagazineCategory, renderMagazineSearch, renderMagazinePost, renderAuthorPage, renderNotFound, renderRss } from "./magazine-pages.mjs";
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
@@ -25,6 +26,16 @@ const shoppingHub = renderShoppingHub();
 const generatedShoppingPages = shoppingPages.map(renderShoppingPage);
 const shoppingJs = await readFile("src/shopping.js", "utf8");
 const shoppingCss = await readFile("styles-shopping.css", "utf8");
+const magazinePosts = await loadMagazinePosts();
+const magazineHub = renderMagazineHub(magazinePosts);
+const magazineCategoriesHtml = magazineCategories.map((category) => renderMagazineCategory(category, magazinePosts));
+const magazineSearch = renderMagazineSearch(magazinePosts);
+const magazineDetails = magazinePosts.map((post) => renderMagazinePost(post, magazinePosts));
+const magazineAuthor = renderAuthorPage(magazinePosts);
+const magazineNotFound = renderNotFound();
+const magazineRss = renderRss(magazinePosts, "https://sydneypick.com");
+const magazineJs = await readFile("src/magazine.js", "utf8");
+const magazineCss = await readFile("styles-magazine.css", "utf8");
 const assertions = [
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
@@ -89,6 +100,20 @@ const assertions = [
   [generatedShoppingPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "shopping update dates and official sources"],
   [html.includes('href="/shopping"') && html.includes('href="/shopping/sdf"'), "homepage links shopping hub and SDF guide"],
   [html.includes('/shopping') && html.includes('/shopping/sdf') && (await readFile("scripts/build.mjs", "utf8")).includes('/shopping/sdf'), "homepage and DAY 6 build link shopping guides"],
+  [magazinePosts.length === 6 && new Set(magazinePosts.map(({ slug }) => slug)).size === 6, "six unique magazine articles"],
+  [magazinePosts.every((post) => ["title","slug","description","category","tags","author","publishedAt","updatedAt","heroImage","heroImageAlt","ogImage","featured","recommended","readingTime","sources","relatedPosts","relatedAreas","relatedItineraries","status","content"].every((field) => post[field] !== undefined)), "magazine content fields"],
+  [magazineCategories.length === 9 && magazineCategories.every(({ slug }) => /^[a-z0-9-]+$/.test(slug)), "nine consistent magazine category slugs"],
+  [(magazineHub.match(/<h1>/g) || []).length === 1 && magazineDetails.every((page) => (page.match(/<h1>/g) || []).length === 1), "one H1 per magazine page"],
+  [magazineDetails.every((page) => page.includes('"@type":"Article"') && page.includes('"@type":"BreadcrumbList"') && page.includes('"@type":"FAQPage"')), "article, breadcrumb and visible FAQ schemas"],
+  [magazinePosts.every((post) => post.toc.some(({ level }) => level === 2)) && magazineDetails.every((page) => page.includes('class="article-toc"')), "automatic H2 and H3 table of contents"],
+  [magazineSearch.includes("window.__MAGAZINE_INDEX__") && magazineJs.includes("URLSearchParams") && magazineJs.includes("제목, 요약, 카테고리"), "client-side title summary category search"],
+  [magazineJs.includes("typeof document!=='undefined'") && !magazineJs.includes("fetch("), "magazine browser code is static and server-safe"],
+  [magazineCategoriesHtml.length === 9 && magazineCategoriesHtml.every((page) => (page.match(/<h1>/g) || []).length === 1), "category routes including empty states"],
+  [magazineAuthor.includes("시드니픽 편집팀") && !magazineAuthor.includes("방문 횟수</"), "author page avoids invented credentials"],
+  [magazineNotFound.includes("404") && magazineNotFound.includes("noindex"), "custom noindex 404 page"],
+  [(magazineRss.match(/<item>/g) || []).length === 6, "RSS contains all published posts"],
+  [magazineCss.includes("aspect-ratio:16/9") && magazineCss.includes("@media(max-width:600px)"), "magazine image ratio and mobile layout"],
+  [html.includes('href="/magazine"') && html.includes('/magazine/sydney-opal-card-guide'), "homepage links magazine hub and real articles"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);
