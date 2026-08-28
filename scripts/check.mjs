@@ -2,6 +2,7 @@ import { readFile, access } from "node:fs/promises";
 import { areaGuides, renderAreaGuide } from "./area-guides.mjs";
 import { travelPrepPages, renderTravelPrepHub, renderTravelPrepPage } from "./travel-prep-pages.mjs";
 import { foodPages, restaurantFieldSchema, restaurantRecords, renderFoodHub, renderFoodPage } from "./food-pages.mjs";
+import { shoppingPages, shoppingProductSchema, shoppingProducts, sdfStoreData, renderShoppingHub, renderShoppingPage } from "./shopping-pages.mjs";
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
@@ -20,6 +21,10 @@ const prepJs = await readFile("src/travel-prep.js", "utf8");
 const foodHub = renderFoodHub();
 const generatedFoodPages = foodPages.map(renderFoodPage);
 const foodJs = await readFile("src/food.js", "utf8");
+const shoppingHub = renderShoppingHub();
+const generatedShoppingPages = shoppingPages.map(renderShoppingPage);
+const shoppingJs = await readFile("src/shopping.js", "utf8");
+const shoppingCss = await readFile("styles-shopping.css", "utf8");
 const assertions = [
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
@@ -73,6 +78,17 @@ const assertions = [
   [generatedFoodPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "food update dates and official sources"],
   [html.includes('href="/food"'), "homepage links food hub"],
   [itineraryDetail.includes('/food/harbour-dining') && itineraryDetail.includes('/food/brunch-cafes') && itineraryDetail.includes('/food/by-area'), "5n6d links food guides"],
+  [shoppingPages.length === 5 && new Set(shoppingPages.map((page) => page.slug)).size === 5, "five unique shopping detail routes"],
+  [(shoppingHub.match(/<h1>/g) || []).length === 1 && generatedShoppingPages.every((page) => (page.match(/<h1>/g) || []).length === 1), "one H1 per shopping page"],
+  [generatedShoppingPages.every((page) => page.includes("BreadcrumbList") && page.includes('"@type":"FAQPage"')), "shopping breadcrumb and visible FAQ schema"],
+  [!shoppingHub.includes('"@type":"Product"') && generatedShoppingPages.every((page) => !page.includes('"@type":"Product"') && !page.includes('"@type":"LocalBusiness"')), "no Product or LocalBusiness schema without verified data"],
+  [shoppingProducts.length === 0 && Object.keys(shoppingProductSchema).length === 16 && sdfStoreData.address === null, "empty verified shopping data and reusable schemas"],
+  [shoppingHub.includes("편집 추천") && shoppingHub.includes("제휴 링크") && shoppingHub.includes("유료 광고") && shoppingHub.includes("SDF 취급상품"), "shopping disclosure labels"],
+  [shoppingJs.includes("localStorage") && shoppingJs.includes("data-shopping-filter") && shoppingJs.includes("typeof document!=='undefined'") && !shoppingJs.includes("fetch("), "shopping interactions are local and server-safe"],
+  [shoppingCss.includes("aspect-ratio:16/9") && shoppingCss.includes("@media(max-width:600px)"), "shopping image ratio and mobile layout"],
+  [generatedShoppingPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "shopping update dates and official sources"],
+  [html.includes('href="/shopping"') && html.includes('href="/shopping/sdf"'), "homepage links shopping hub and SDF guide"],
+  [html.includes('/shopping') && html.includes('/shopping/sdf') && (await readFile("scripts/build.mjs", "utf8")).includes('/shopping/sdf'), "homepage and DAY 6 build link shopping guides"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);
