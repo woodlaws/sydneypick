@@ -7,6 +7,6 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/favicon.ico", "destination": "/public/favicon.svg" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/:path*", "destination": "/index.html" }
   ]
 }

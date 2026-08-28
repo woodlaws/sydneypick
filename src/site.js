@@ -77,6 +77,10 @@ document.querySelector(".guide-form")?.addEventListener("submit", (event) => {
 const backTop = document.querySelector(".back-top");
 window.addEventListener("scroll", () => backTop?.classList.toggle("show", window.scrollY > 800), { passive: true });
 backTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+const routeSection = window.location.pathname.replace(/^\/+|\/+$/g, "");
+if (["schedule", "areas", "prepare", "shopping", "magazine"].includes(routeSection)) {
+  window.requestAnimationFrame(() => document.getElementById(routeSection)?.scrollIntoView());
+}
 }
 
 if (typeof document !== "undefined") {
