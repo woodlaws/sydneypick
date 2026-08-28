@@ -5,6 +5,7 @@ import { foodPages, restaurantFieldSchema, restaurantRecords, renderFoodHub, ren
 import { shoppingPages, shoppingProductSchema, shoppingProducts, sdfStoreData, renderShoppingHub, renderShoppingPage } from "./shopping-pages.mjs";
 import { loadMagazinePosts, magazineCategories, renderMagazineHub, renderMagazineCategory, renderMagazineSearch, renderMagazinePost, renderAuthorPage, renderNotFound, renderRss } from "./magazine-pages.mjs";
 import { renderFreeGuide, renderGuideComplete, renderGuideSample, renderPrivacy } from "./lead-pages.mjs";
+import { renderAbout, renderOperator, renderEditorialPolicy, renderPartnership, renderContact } from "./trust-pages.mjs";
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
@@ -44,6 +45,14 @@ const guideSample = renderGuideSample();
 const privacy = renderPrivacy(leadConfig);
 const freeGuideJs = await readFile("src/free-guide.js", "utf8");
 const leadCss = await readFile("styles-leads.css", "utf8");
+const about = renderAbout();
+const operator = renderOperator(magazinePosts);
+const editorialPolicy = renderEditorialPolicy();
+const partnership = renderPartnership();
+const contact = renderContact(leadConfig);
+const contactJs = await readFile("src/contact.js", "utf8");
+const trustCss = await readFile("styles-trust.css", "utf8");
+const buildScript = await readFile("scripts/build.mjs", "utf8");
 const assertions = [
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
@@ -135,6 +144,19 @@ const assertions = [
   [["free_guide_view","free_guide_form_start","free_guide_submit","free_guide_complete","guide_open","itinerary_click","shopping_click","sdf_click"].every((event) => freeGuideJs.includes(event)), "privacy-safe lead funnel event hooks"],
   [leadCss.includes("@media(max-width:600px)") && leadCss.includes("@media print") && leadCss.includes("@page"), "mobile form layout and print-to-PDF CSS"],
   [html.includes('href="/free-guide"') && !html.includes('href="#guide"'), "homepage guide CTAs use real route"],
+  [[about, operator, editorialPolicy, partnership, contact].every((page) => (page.match(/<h1(?:\s|>)/g) || []).length === 1), "one H1 per trust page"],
+  [[about, operator, editorialPolicy, partnership, contact].every((page) => page.includes('BreadcrumbList') && page.includes('rel="canonical"') && page.includes('property="og:title"')), "trust page SEO, breadcrumb and Open Graph"],
+  [about.includes('"@type":"Organization"') && !about.includes('"telephone"') && !about.includes('"address"'), "Organization schema contains only confirmed fields"],
+  [operator.includes('"@type":"Person"') && operator.includes('임헌수') && operator.includes('2023년') && operator.includes('14박 15일') && operator.includes('거상스쿨') && operator.includes('거상마케팅센터'), "operator page uses confirmed facts"],
+  [operator.includes('실제 프로필 사진으로 교체 예정') && operator.includes('실제 시드니 여행 사진') && !operator.includes('시드니 최고 전문가'), "operator media placeholders and no inflated claim"],
+  [editorialPolicy.includes('AI 활용과 사람의 검토') && editorialPolicy.includes('저작권과 이미지 출처') && editorialPolicy.includes('SDF 관련 콘텐츠 공개 원칙') && editorialPolicy.includes('광고·제휴·편집 추천을 구분'), "editorial and SDF disclosure principles"],
+  [(partnership.match(/<article><span>\d{2}<\/span><div><h3>/g) || []).length === 10 && partnership.includes('가격표·노출수·성과 수치는') && partnership.includes('가짜 다운로드 버튼을 제공하지 않습니다'), "ten partnership products without fabricated pricing or file"],
+  [leadConfig.contactEndpoint === "" && leadConfig.privacyReady === false && contact.includes('data-form-active="false"') && contact.includes('문의 기능 준비 중'), "contact collection disabled by default"],
+  [contact.includes('name="privacyConsent"') && !contact.includes(' checked') && !contact.includes('type="file"') && contact.includes('파일 업로드 기능은 준비 중'), "contact consent is unchecked and upload is honest"],
+  [contactJs.includes("typeof document!=='undefined'") && contactJs.includes("result.success!==true") && !contactJs.includes("console."), "contact form is server-safe and requires confirmed success"],
+  [contactJs.includes("{detail:{event}}") && !contactJs.includes("detail:{event,email") && !contactJs.includes("detail:{event,name"), "contact analytics excludes personal data"],
+  [trustCss.includes('@media(max-width:600px)') && trustCss.includes('aspect-ratio:4/5') && trustCss.includes('aspect-ratio:16/10'), "trust pages responsive layout and varied image ratios"],
+  [["/about","/about/hunsoo-lim","/editorial-policy","/partnership","/contact","/privacy"].every((path) => buildScript.includes(`href="${path}"`)), "global footer contains all trust links"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);
@@ -145,4 +167,5 @@ await access("public/favicon.svg");
 await access("robots.txt");
 await access("sitemap.xml");
 await access("integrations/google-apps-script.example.js");
+await access("integrations/google-apps-script-contact.example.js");
 console.log("✓ social preview and SEO files");

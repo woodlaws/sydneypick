@@ -1,6 +1,8 @@
 {
   "formEndpoint": "",
   "googleFormUrl": "",
+  "contactEndpoint": "",
+  "contactGoogleFormUrl": "",
   "privacyReady": false,
   "emailDeliveryMode": "web-only",
   "kakaoChannelUrl": "",
