@@ -33,6 +33,16 @@ function initFreeGuide() {
     let started = false;
     let submitting = false;
 
+    if (!config.formEndpoint && config.privacyReady && config.googleFormUrl) {
+      const externalFormLink = document.createElement('a');
+      externalFormLink.className = 'text-link';
+      externalFormLink.href = config.googleFormUrl;
+      externalFormLink.target = '_blank';
+      externalFormLink.rel = 'noreferrer';
+      externalFormLink.textContent = 'Google 신청폼에서 계속하기 ↗';
+      message.insertAdjacentElement('afterend', externalFormLink);
+    }
+
     form.addEventListener('focusin', () => {
       if (!started) {
         started = true;
