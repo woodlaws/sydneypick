@@ -2,11 +2,12 @@ import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { areaGuides, renderAreaGuide } from "./area-guides.mjs";
 import { travelPrepPages, renderTravelPrepHub, renderTravelPrepPage } from "./travel-prep-pages.mjs";
+import { foodPages, renderFoodHub, renderFoodPage } from "./food-pages.mjs";
 
 const root = process.cwd();
 const out = join(root, "dist");
 const config = JSON.parse(await readFile(join(root, "site.config.json"), "utf8"));
-const render = (html) => html.replaceAll("__SITE_URL__", config.siteUrl).replaceAll("__LAST_UPDATED__", config.lastUpdated).replaceAll('href="/#prepare"', 'href="/travel-prep"');
+const render = (html) => html.replaceAll("__SITE_URL__", config.siteUrl).replaceAll("__LAST_UPDATED__", config.lastUpdated).replaceAll('href="/#prepare"', 'href="/travel-prep"').replaceAll('href="/#food"', 'href="/food"');
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
 for (const file of ["index.html", "styles.css", "robots.txt", "sitemap.xml"]) {
@@ -30,12 +31,19 @@ await mkdir(join(out, "travel-prep"), { recursive: true });
 for (const page of travelPrepPages) {
   await writeFile(join(out, "travel-prep", `${page.slug}.html`), render(renderTravelPrepPage(page)));
 }
+await writeFile(join(out, "food.html"), render(renderFoodHub()));
+await mkdir(join(out, "food"), { recursive: true });
+for (const page of foodPages) {
+  await writeFile(join(out, "food", `${page.slug}.html`), render(renderFoodPage(page)));
+}
 await cp(join(root, "styles-pages.css"), join(out, "styles-pages.css"));
 await cp(join(root, "styles-areas.css"), join(out, "styles-areas.css"));
 await cp(join(root, "styles-prep.css"), join(out, "styles-prep.css"));
+await cp(join(root, "styles-food.css"), join(out, "styles-food.css"));
 await mkdir(join(out, "assets"), { recursive: true });
 await cp(join(root, "src", "site.js"), join(out, "assets", "site.js"));
 await cp(join(root, "src", "itineraries.js"), join(out, "assets", "itineraries.js"));
 await cp(join(root, "src", "travel-prep.js"), join(out, "assets", "travel-prep.js"));
+await cp(join(root, "src", "food.js"), join(out, "assets", "food.js"));
 try { await cp(join(root, "public"), join(out, "public"), { recursive: true }); } catch (error) { if (error.code !== "ENOENT") throw error; }
 console.log("Built dist/");
