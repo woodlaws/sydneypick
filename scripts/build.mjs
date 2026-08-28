@@ -1,5 +1,6 @@
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { areaGuides, renderAreaGuide } from "./area-guides.mjs";
 
 const root = process.cwd();
 const out = join(root, "dist");
@@ -20,6 +21,9 @@ await writeFile(join(out, "areas.html"), render(await readFile(join(root, "pages
 await mkdir(join(out, "areas"), { recursive: true });
 await writeFile(join(out, "areas", "circular-quay.html"), render(await readFile(join(root, "pages", "circular-quay.html"), "utf8")));
 await writeFile(join(out, "areas", "sydney-opera-house.html"), render(await readFile(join(root, "pages", "sydney-opera-house.html"), "utf8")));
+for (const guide of areaGuides) {
+  await writeFile(join(out, "areas", `${guide.slug}.html`), render(renderAreaGuide(guide)));
+}
 await cp(join(root, "styles-pages.css"), join(out, "styles-pages.css"));
 await cp(join(root, "styles-areas.css"), join(out, "styles-areas.css"));
 await mkdir(join(out, "assets"), { recursive: true });

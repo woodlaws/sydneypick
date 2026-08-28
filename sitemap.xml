@@ -10,5 +10,9 @@
   <url><loc>https://sydneypick.com/areas</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
   <url><loc>https://sydneypick.com/areas/circular-quay</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://sydneypick.com/areas/sydney-opera-house</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/areas/the-rocks</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/areas/bondi-beach</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/areas/manly</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/areas/blue-mountains</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
 

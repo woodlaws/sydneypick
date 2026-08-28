@@ -1,4 +1,5 @@
 import { readFile, access } from "node:fs/promises";
+import { areaGuides, renderAreaGuide } from "./area-guides.mjs";
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
@@ -10,6 +11,7 @@ const areasHub = await readFile("pages/areas.html", "utf8");
 const circularQuay = await readFile("pages/circular-quay.html", "utf8");
 const operaHouse = await readFile("pages/sydney-opera-house.html", "utf8");
 const areasCss = await readFile("styles-areas.css", "utf8");
+const generatedAreaPages = areaGuides.map(renderAreaGuide);
 const assertions = [
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
@@ -33,9 +35,16 @@ const assertions = [
   [areasHub.includes("ItemList") && circularQuay.includes('"@type":"Place"') && operaHouse.includes('"@type":"TouristAttraction"'), "area structured data"],
   [circularQuay.includes('"@type":"FAQPage"') && operaHouse.includes('"@type":"FAQPage"'), "visible FAQ schema"],
   [circularQuay.includes("transportnsw.info") && operaHouse.includes("sydneyoperahouse.com"), "official source buttons"],
-  [areasHub.includes("상세 콘텐츠 준비 중") && !areasHub.includes('/areas/the-rocks'), "no fabricated detail routes"],
+  [areasHub.includes("상세 콘텐츠 준비 중") && !areasHub.includes('/areas/darling-harbour') && !areasHub.includes('/areas/port-stephens'), "no fabricated detail routes"],
   [areasCss.includes("aspect-ratio:16/9") && areasCss.includes("aspect-ratio:3/2") && areasCss.includes("aspect-ratio:4/3"), "varied area image ratios"],
   [!areasHub.includes("document.") && !circularQuay.includes("document.") && !operaHouse.includes("document."), "area HTML has no server-side browser execution"],
+  [areaGuides.length === 4 && new Set(areaGuides.map((guide) => guide.slug)).size === 4, "four unique regional guide routes"],
+  [generatedAreaPages.every((page) => (page.match(/<h1>/g) || []).length === 1 && page.includes('"@type":"FAQPage"')), "generated guides have one H1 and FAQ schema"],
+  [generatedAreaPages.every((page) => page.includes("BreadcrumbList") && (page.includes('"@type":"Place"') || page.includes('"@type":"TouristAttraction"'))), "generated guide structured data"],
+  [new Set(areaGuides.flatMap((guide) => [guide.hero, guide.body])).size === areaGuides.length * 2, "regional guide images are not repeated"],
+  [generatedAreaPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "updates and official sources"],
+  [areasHub.includes('/areas/the-rocks') && areasHub.includes('/areas/bondi-beach') && areasHub.includes('/areas/manly') && areasHub.includes('/areas/blue-mountains'), "area hub links all new guides"],
+  [itineraryDetail.includes('/areas/the-rocks') && itineraryDetail.includes('/areas/bondi-beach') && itineraryDetail.includes('/areas/manly') && itineraryDetail.includes('/areas/blue-mountains'), "5n6d links all new guides"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);
