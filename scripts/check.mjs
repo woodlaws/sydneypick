@@ -4,6 +4,7 @@ import { travelPrepPages, renderTravelPrepHub, renderTravelPrepPage } from "./tr
 import { foodPages, restaurantFieldSchema, restaurantRecords, renderFoodHub, renderFoodPage } from "./food-pages.mjs";
 import { shoppingPages, shoppingProductSchema, shoppingProducts, sdfStoreData, renderShoppingHub, renderShoppingPage } from "./shopping-pages.mjs";
 import { loadMagazinePosts, magazineCategories, renderMagazineHub, renderMagazineCategory, renderMagazineSearch, renderMagazinePost, renderAuthorPage, renderNotFound, renderRss } from "./magazine-pages.mjs";
+import { renderFreeGuide, renderGuideComplete, renderGuideSample, renderPrivacy } from "./lead-pages.mjs";
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
@@ -36,6 +37,13 @@ const magazineNotFound = renderNotFound();
 const magazineRss = renderRss(magazinePosts, "https://sydneypick.com");
 const magazineJs = await readFile("src/magazine.js", "utf8");
 const magazineCss = await readFile("styles-magazine.css", "utf8");
+const leadConfig = JSON.parse(await readFile("lead.config.json", "utf8"));
+const freeGuide = renderFreeGuide(leadConfig);
+const guideComplete = renderGuideComplete(leadConfig);
+const guideSample = renderGuideSample();
+const privacy = renderPrivacy(leadConfig);
+const freeGuideJs = await readFile("src/free-guide.js", "utf8");
+const leadCss = await readFile("styles-leads.css", "utf8");
 const assertions = [
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
@@ -114,6 +122,19 @@ const assertions = [
   [(magazineRss.match(/<item>/g) || []).length === 6, "RSS contains all published posts"],
   [magazineCss.includes("aspect-ratio:16/9") && magazineCss.includes("@media(max-width:600px)"), "magazine image ratio and mobile layout"],
   [html.includes('href="/magazine"') && html.includes('/magazine/sydney-opal-card-guide'), "homepage links magazine hub and real articles"],
+  [[freeGuide, guideComplete, guideSample, privacy].every((page) => (page.match(/<h1(?:\s|>)/g) || []).length === 1), "one H1 per free-guide and privacy page"],
+  [freeGuide.includes('"@type":"FAQPage"') && freeGuide.includes('"@type":"BreadcrumbList"'), "free-guide visible FAQ and breadcrumb schema"],
+  [guideComplete.includes('noindex,follow') && !guideComplete.includes('name="email"') && !guideComplete.includes('name="name"'), "completion page is noindex and contains no applicant data"],
+  [guideSample.includes('data-print-guide') && guideSample.includes('5박 6일') && guideSample.includes('/shopping/checklist'), "printable web guide content"],
+  [privacy.includes("운영정보 입력 필요") && privacy.includes("개인정보 수집 비활성"), "privacy policy blocks unconfirmed operations"],
+  [leadConfig.formEndpoint === "" && leadConfig.privacyReady === false && freeGuide.includes('data-form-active="false"'), "lead collection disabled by default"],
+  [freeGuide.includes('name="privacyConsent"') && freeGuide.includes('name="marketingConsent"') && !freeGuide.includes(" checked"), "separate unchecked required and optional consent"],
+  [freeGuide.includes('type="email"') && freeGuide.includes('name="website"') && !freeGuide.includes('name="phone"'), "email validation and honeypot without phone collection"],
+  [freeGuideJs.includes("typeof document !== 'undefined'") && freeGuideJs.includes("submitting") && freeGuideJs.includes("form.reportValidity()"), "server-safe form validation and duplicate-submit guard"],
+  [freeGuideJs.includes("result.success !== true") && freeGuideJs.includes("sessionStorage.setItem('sydneyPickGuideComplete'") && !freeGuideJs.includes("console."), "confirmed success gate without applicant console logging"],
+  [["free_guide_view","free_guide_form_start","free_guide_submit","free_guide_complete","guide_open","itinerary_click","shopping_click","sdf_click"].every((event) => freeGuideJs.includes(event)), "privacy-safe lead funnel event hooks"],
+  [leadCss.includes("@media(max-width:600px)") && leadCss.includes("@media print") && leadCss.includes("@page"), "mobile form layout and print-to-PDF CSS"],
+  [html.includes('href="/free-guide"') && !html.includes('href="#guide"'), "homepage guide CTAs use real route"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);
@@ -123,4 +144,5 @@ await access("public/og.png");
 await access("public/favicon.svg");
 await access("robots.txt");
 await access("sitemap.xml");
+await access("integrations/google-apps-script.example.js");
 console.log("✓ social preview and SEO files");

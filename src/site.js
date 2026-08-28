@@ -62,11 +62,6 @@ document.querySelector("#reset-checklist")?.addEventListener("click", () => {
   Object.keys(savedChecks).forEach((key) => delete savedChecks[key]);
 });
 
-document.querySelector(".guide-form")?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  event.currentTarget.querySelector(".form-status").textContent = "감사합니다. 현재 데모 화면이라 실제 신청 정보는 전송되지 않습니다.";
-});
-
 const backTop = document.querySelector(".back-top");
 window.addEventListener("scroll", () => backTop?.classList.toggle("show", window.scrollY > 800), { passive: true });
 backTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
