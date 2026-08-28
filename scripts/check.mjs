@@ -1,6 +1,7 @@
 import { readFile, access } from "node:fs/promises";
 import { areaGuides, renderAreaGuide } from "./area-guides.mjs";
 import { travelPrepPages, renderTravelPrepHub, renderTravelPrepPage } from "./travel-prep-pages.mjs";
+import { foodPages, restaurantFieldSchema, restaurantRecords, renderFoodHub, renderFoodPage } from "./food-pages.mjs";
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
@@ -16,6 +17,9 @@ const generatedAreaPages = areaGuides.map(renderAreaGuide);
 const prepHub = renderTravelPrepHub();
 const generatedPrepPages = travelPrepPages.map(renderTravelPrepPage);
 const prepJs = await readFile("src/travel-prep.js", "utf8");
+const foodHub = renderFoodHub();
+const generatedFoodPages = foodPages.map(renderFoodPage);
+const foodJs = await readFile("src/food.js", "utf8");
 const assertions = [
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
@@ -58,6 +62,17 @@ const assertions = [
   [generatedPrepPages.find((page) => page.includes("준비물 체크리스트"))?.includes("data-custom-item-form"), "custom checklist item support"],
   [html.includes('href="/travel-prep"'), "homepage links travel-prep hub"],
   [itineraryDetail.includes('/travel-prep/airport-to-city') && itineraryDetail.includes('/travel-prep/opal-card') && itineraryDetail.includes('/travel-prep/esim') && itineraryDetail.includes('/travel-prep/money-payment'), "5n6d links travel-prep guides"],
+  [foodPages.length === 4 && new Set(foodPages.map((page) => page.slug)).size === 4, "four unique food detail routes"],
+  [(foodHub.match(/<h1>/g) || []).length === 1 && generatedFoodPages.every((page) => (page.match(/<h1>/g) || []).length === 1), "one H1 per food page"],
+  [generatedFoodPages.every((page) => page.includes("BreadcrumbList") && page.includes('"@type":"FAQPage"')), "food breadcrumb and visible FAQ schema"],
+  [!foodHub.includes('"@type":"Restaurant"') && generatedFoodPages.every((page) => !page.includes('"@type":"Restaurant"')), "no Restaurant schema without verified venues"],
+  [restaurantRecords.length === 0 && Object.keys(restaurantFieldSchema).length === 18, "empty verified restaurant data and reusable field schema"],
+  [foodHub.includes("에디터 확인 후 업데이트") && foodHub.includes("제휴 준비 중"), "editorial and affiliate status labels"],
+  [foodJs.includes("dataFoodFilter") || foodJs.includes("foodFilter"), "food filter behavior"],
+  [foodJs.includes("typeof document!=='undefined'") && !foodJs.includes("fetch("), "food browser code is server-safe"],
+  [generatedFoodPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "food update dates and official sources"],
+  [html.includes('href="/food"'), "homepage links food hub"],
+  [itineraryDetail.includes('/food/harbour-dining') && itineraryDetail.includes('/food/brunch-cafes') && itineraryDetail.includes('/food/by-area'), "5n6d links food guides"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);

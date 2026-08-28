@@ -20,4 +20,9 @@
   <url><loc>https://sydneypick.com/travel-prep/esim</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://sydneypick.com/travel-prep/money-payment</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://sydneypick.com/travel-prep/checklist</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/food</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sydneypick.com/food/by-area</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/food/brunch-cafes</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/food/harbour-dining</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/food/korean-food</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
