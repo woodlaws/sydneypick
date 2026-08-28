@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.mjs",
+    "dev": "node scripts/preview.mjs",
     "build": "node scripts/build.mjs",
-    "start": "node server.mjs --root dist",
+    "preview": "node scripts/preview.mjs --root dist",
+    "start": "npm run preview",
     "check": "node scripts/check.mjs"
   }
 }

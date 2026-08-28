@@ -8,6 +8,7 @@ const siteContent = {
   searchAliases: { "본다이": "areas", "맨리": "areas", "블루마운틴": "areas", "일정": "schedule", "교통": "prepare", "맛집": "food", "카페": "food", "쇼핑": "shopping", "면세": "sdf", "가이드": "guide" }
 };
 
+function initSite() {
 const header = document.querySelector(".site-header");
 const menuButton = document.querySelector(".menu-toggle");
 menuButton?.addEventListener("click", () => {
@@ -76,3 +77,12 @@ document.querySelector(".guide-form")?.addEventListener("submit", (event) => {
 const backTop = document.querySelector(".back-top");
 window.addEventListener("scroll", () => backTop?.classList.toggle("show", window.scrollY > 800), { passive: true });
 backTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+}
+
+if (typeof document !== "undefined") {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSite, { once: true });
+  } else {
+    initSite();
+  }
+}

@@ -1,7 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "node scripts/build.mjs",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/favicon.ico", "destination": "/public/favicon.svg" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
