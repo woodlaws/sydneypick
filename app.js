@@ -1,48 +1,78 @@
-const plans = [
-  { title: "하버에 첫눈에 반하는 날", note: "모두 도보 25분 권역", stops: ["The Rocks", "하버 브리지", "오페라 하우스", "보태닉 가든"], food: "The Rocks 펍 런치 · Circular Quay 젤라토", cost: "A$95–135" },
-  { title: "태평양을 옆에 두고 걷는 날", note: "버스 + 코스탈 워크", stops: ["Bondi Beach", "Tamarama", "Bronte", "Coogee"], food: "Bondi 브런치 · Coogee 피시 앤 칩스", cost: "A$105–145" },
-  { title: "페리 자체가 여행이 되는 날", note: "Circular Quay에서 F1 페리", stops: ["Manly Wharf", "Shelly Beach", "North Head", "Manly Corso"], food: "Manly 베이커리 · 해변가 이른 저녁", cost: "A$110–150" },
-  { title: "동네의 결을 따라 느긋한 날", note: "라이트레일 + 도보", stops: ["Surry Hills", "Paddington", "QVB", "Darling Harbour"], food: "Surry Hills 커피 · Chinatown 저녁", cost: "A$100–140" },
-  { title: "현지인처럼 한 박자 늦추는 날", note: "기차 + 이너웨스트 산책", stops: ["Newtown", "Carriageworks", "Barangaroo", "Observatory Hill"], food: "Newtown 다문화 런치 · Barangaroo 선셋", cost: "A$95–130" }
-];
+const siteContent = {
+  itineraries: {
+    4: { name: "3박 4일 · 핵심 코스", summary: "시드니의 아이콘과 해변을 빠르게", days: ["하버 아이콘", "본다이 코스트", "맨리 페리", "도심 & 출국"] },
+    5: { name: "4박 5일 · 시드니 & 근교", summary: "대표 지역에 블루마운틴 하루를 더해", days: ["하버 아이콘", "본다이 코스트", "맨리 페리", "블루마운틴", "도심 & 출국"] },
+    6: { name: "5박 6일 · FIRST PICK", summary: "하버, 해변, 로컬 동네, 근교 자연을 한 번씩 충분히", days: ["하버 아이콘", "본다이 코스트", "맨리 페리", "로컬 동네", "블루마운틴", "마지막 쇼핑 & 출국"] },
+    8: { name: "7박 8일 · 여유 코스", summary: "시드니와 주변 지역을 느린 호흡으로", days: ["하버 아이콘", "본다이 코스트", "맨리 페리", "로컬 동네", "블루마운틴", "남부 해안", "자유 일정", "마지막 쇼핑 & 출국"] }
+  },
+  searchAliases: { "본다이": "areas", "맨리": "areas", "블루마운틴": "areas", "일정": "schedule", "교통": "prepare", "맛집": "food", "카페": "food", "쇼핑": "shopping", "면세": "sdf", "가이드": "guide" }
+};
 
-const timeline = document.querySelector("#timeline");
-const budget = { 2: "A$220–300", 3: "A$330–450", 4: "A$430–590", 5: "A$530–720" };
-let selectedDays = 3;
-
-function renderPlan() {
-  document.querySelector("#plan-days").textContent = selectedDays;
-  document.querySelector("#budget-total").textContent = budget[selectedDays];
-  timeline.innerHTML = plans.slice(0, selectedDays).map((plan, index) => `
-    <article class="day-card ${index === 0 ? "open" : ""}">
-      <button class="day-toggle" aria-expanded="${index === 0}">
-        <span class="day-num">${String(index + 1).padStart(2, "0")}</span>
-        <span class="day-title"><small>DAY ${index + 1} · ${plan.note}</small><strong>${plan.title}</strong></span>
-        <span class="day-cost">${plan.cost}<i>＋</i></span>
-      </button>
-      <div class="day-detail">
-        <div class="stop-list">${plan.stops.map((stop, stopIndex) => `<span>${stopIndex + 1}<b>${stop}</b></span>`).join("")}</div>
-        <p><em>오늘의 한 끼</em>${plan.food}</p>
-      </div>
-    </article>`).join("");
-  document.querySelectorAll(".day-toggle").forEach(button => button.addEventListener("click", () => {
-    const card = button.closest(".day-card");
-    const isOpen = card.classList.toggle("open");
-    button.setAttribute("aria-expanded", String(isOpen));
-  }));
-}
-
-document.querySelectorAll("[data-days]").forEach(button => button.addEventListener("click", () => {
-  document.querySelectorAll("[data-days]").forEach(item => item.classList.remove("selected"));
-  button.classList.add("selected");
-  selectedDays = Number(button.dataset.days);
-  renderPlan();
+const header = document.querySelector(".site-header");
+const menuButton = document.querySelector(".menu-toggle");
+menuButton?.addEventListener("click", () => {
+  const open = header.classList.toggle("menu-open");
+  menuButton.setAttribute("aria-expanded", String(open));
+  menuButton.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기");
+});
+document.querySelectorAll(".mobile-menu a").forEach((link) => link.addEventListener("click", () => {
+  header.classList.remove("menu-open");
+  menuButton?.setAttribute("aria-expanded", "false");
 }));
 
-document.querySelectorAll("[data-style]").forEach(button => button.addEventListener("click", () => button.classList.toggle("active")));
-document.querySelector("#make-plan").addEventListener("click", () => document.querySelector("#itinerary").scrollIntoView({ behavior: "smooth" }));
-document.querySelectorAll(".district").forEach(card => card.addEventListener("click", () => {
-  document.querySelectorAll(".district").forEach(item => item.classList.remove("active"));
-  card.classList.add("active");
+const route = document.querySelector("#day-route");
+function renderPlan(dayCount = 6) {
+  const plan = siteContent.itineraries[dayCount];
+  document.querySelector("#itinerary-name").textContent = plan.name;
+  document.querySelector("#itinerary-summary").textContent = plan.summary;
+  route.innerHTML = plan.days.map((day, index) => `<li><b>DAY ${String(index + 1).padStart(2, "0")}</b><span>${day}</span></li>`).join("");
+}
+document.querySelectorAll("[data-plan]").forEach((button) => button.addEventListener("click", () => {
+  document.querySelectorAll("[data-plan]").forEach((item) => item.classList.remove("active"));
+  button.classList.add("active");
+  renderPlan(Number(button.dataset.plan));
+  document.querySelector(".itinerary-panel")?.scrollIntoView({ behavior: "smooth", block: "center" });
 }));
 renderPlan();
+
+const searchForm = document.querySelector(".hero-search");
+const searchStatus = document.querySelector(".search-status");
+searchForm?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const query = String(new FormData(searchForm).get("q") || "").trim().toLowerCase();
+  if (!query) {
+    searchStatus.textContent = "찾고 싶은 지역이나 주제를 입력해주세요.";
+    return;
+  }
+  const alias = Object.entries(siteContent.searchAliases).find(([key]) => query.includes(key));
+  const target = alias ? document.querySelector(`#${alias[1]}`) : [...document.querySelectorAll("[data-search]")].find((element) => element.dataset.search.toLowerCase().includes(query));
+  if (target) {
+    searchStatus.textContent = `“${query}” 관련 섹션으로 이동합니다.`;
+    target.scrollIntoView({ behavior: "smooth" });
+  } else {
+    searchStatus.textContent = "관련 섹션을 찾지 못했어요. 일정, 지역, 맛집, 교통처럼 검색해보세요.";
+  }
+});
+
+const savedChecks = JSON.parse(localStorage.getItem("sydneyPickChecklist") || "{}");
+document.querySelectorAll("[data-check]").forEach((checkbox) => {
+  checkbox.checked = Boolean(savedChecks[checkbox.dataset.check]);
+  checkbox.addEventListener("change", () => {
+    savedChecks[checkbox.dataset.check] = checkbox.checked;
+    localStorage.setItem("sydneyPickChecklist", JSON.stringify(savedChecks));
+  });
+});
+document.querySelector("#reset-checklist")?.addEventListener("click", () => {
+  document.querySelectorAll("[data-check]").forEach((checkbox) => { checkbox.checked = false; });
+  localStorage.removeItem("sydneyPickChecklist");
+  Object.keys(savedChecks).forEach((key) => delete savedChecks[key]);
+});
+
+document.querySelector(".guide-form")?.addEventListener("submit", (event) => {
+  event.preventDefault();
+  event.currentTarget.querySelector(".form-status").textContent = "감사합니다. 현재 데모 화면이라 실제 신청 정보는 전송되지 않습니다.";
+});
+
+const backTop = document.querySelector(".back-top");
+window.addEventListener("scroll", () => backTop?.classList.toggle("show", window.scrollY > 800), { passive: true });
+backTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
