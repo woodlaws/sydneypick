@@ -48,7 +48,12 @@ searchForm?.addEventListener("submit", (event) => {
   window.location.assign(`/magazine/search?q=${encodeURIComponent(query)}`);
 });
 
-const savedChecks = JSON.parse(localStorage.getItem("sydneyPickChecklist") || "{}");
+let savedChecks = {};
+try {
+  savedChecks = JSON.parse(localStorage.getItem("sydneyPickChecklist") || "{}");
+} catch {
+  localStorage.removeItem("sydneyPickChecklist");
+}
 document.querySelectorAll("[data-check]").forEach((checkbox) => {
   checkbox.checked = Boolean(savedChecks[checkbox.dataset.check]);
   checkbox.addEventListener("change", () => {

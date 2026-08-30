@@ -5,6 +5,7 @@
   "contactGoogleFormUrl": "",
   "privacyReady": false,
   "emailDeliveryMode": "web-only",
+  "consultationUrl": "/contact",
   "kakaoChannelUrl": "",
   "privacyOfficer": "",
   "privacyContactEmail": "",
