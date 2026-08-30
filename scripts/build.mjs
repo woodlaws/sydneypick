@@ -17,6 +17,7 @@ leadConfig.contactEndpoint = process.env.CONTACT_FORM_ENDPOINT?.trim() || leadCo
 leadConfig.consultationUrl = process.env.CONSULTATION_URL?.trim() || leadConfig.consultationUrl || "/contact";
 leadConfig.kakaoChannelUrl = process.env.KAKAO_CHANNEL_URL?.trim() || leadConfig.kakaoChannelUrl;
 const magazinePosts = await loadMagazinePosts(root);
+const headerLogo = `<a class="brand header-logo" href="/" aria-label="시드니픽 홈"><picture><source srcset="/public/images/brand/sydney-pick-logo.webp" type="image/webp"><img src="/public/images/brand/sydney-pick-logo.png" alt="시드니픽" width="1919" height="394"></picture></a>`;
 const commonFooter = `<footer class="site-footer"><div class="wrap footer-grid"><div class="footer-brand"><a class="brand" href="/" aria-label="시드니픽 홈"><strong>SYDNEY PICK</strong><span>시드니픽</span></a><p>한국인을 위한 시드니 자유여행 가이드.<br>더 적게 헤매고, 더 오래 기억하세요.</p></div><nav aria-label="브랜드"><strong>브랜드</strong><a href="/about">시드니픽 소개</a><a href="/about/hunsoo-lim">운영자 임헌수</a><a href="/editorial-policy">편집 기준</a></nav><nav aria-label="콘텐츠"><strong>콘텐츠</strong><a href="/itineraries">여행 일정</a><a href="/areas">지역별 픽</a><a href="/food">맛집·카페</a><a href="/travel-prep">여행 준비</a><a href="/shopping">쇼핑픽</a><a href="/magazine">픽 매거진</a></nav><nav aria-label="지원"><strong>지원</strong><a href="/free-guide">무료 여행 가이드</a><a href="/partnership">제휴·광고</a><a href="/contact">문의하기</a><a href="/privacy">개인정보처리방침</a></nav></div><div class="wrap footer-bottom"><p>© 2026 SYDNEY PICK. 변경 가능한 정보는 예약·방문 전 공식 채널을 확인하세요.</p><div><a href="https://www.sydney.com/" target="_blank" rel="noopener noreferrer">Destination NSW</a><a href="https://transportnsw.info/" target="_blank" rel="noopener noreferrer">Transport for NSW</a></div></div></footer>`;
 function replaceSiteFooter(html) {
   const start = html.lastIndexOf("<footer");
@@ -37,7 +38,8 @@ function normalizeImages(html) {
   });
 }
 function normalizeSiteHeader(html) {
-  return html.replace(/<header class="site-header">(?!\s*<div class="site-header__inner">)([\s\S]*?)<\/header>/, '<header class="site-header"><div class="site-header__inner">$1</div></header>');
+  const wrapped = html.replace(/<header class="site-header">(?!\s*<div class="site-header__inner">)([\s\S]*?)<\/header>/, '<header class="site-header"><div class="site-header__inner">$1</div></header>');
+  return wrapped.replace(/<header class="site-header">[\s\S]*?<\/header>/, (siteHeader) => siteHeader.replace(/<a class="brand" href="\/" aria-label="시드니픽 홈"><strong>SYDNEY PICK<\/strong><span>시드니픽<\/span><\/a>/, headerLogo));
 }
 function normalizeArticleHero(html) {
   return html.replace(/<header class="article-header wrap">([\s\S]*?)<\/header><figure class="article-hero"><img([^>]*)><figcaption>([^<]*)<\/figcaption><\/figure>/, (_match, content, imageAttributes, credit) => {

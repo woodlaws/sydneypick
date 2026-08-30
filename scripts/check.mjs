@@ -57,10 +57,14 @@ const contact = renderContact(leadConfig);
 const contactJs = await readFile("src/contact.js", "utf8");
 const trustCss = await readFile("styles-trust.css", "utf8");
 const buildScript = await readFile("scripts/build.mjs", "utf8");
+await access("public/images/brand/sydney-pick-logo.png");
+await access("public/images/brand/sydney-pick-logo.webp");
 const assertions = [
   [vibrantCss.includes("--harbour:#008db5") && vibrantCss.includes("--coral:#ff6b5e") && vibrantCss.includes("--ink:#092f40"), "vibrant Sydney palette tokens"],
   [vibrantCss.includes("brightness(1.05) contrast(1.08) saturate(1.1)") && vibrantCss.includes("body .detail-hero::after"), "scoped image enhancement and directional hero overlays"],
   [buildScript.includes("/styles-vibrant.css") && buildScript.includes('"styles-vibrant.css"'), "vibrant visual layer is linked and published"],
+  [buildScript.includes('class="brand header-logo"') && buildScript.includes('/public/images/brand/sydney-pick-logo.webp') && buildScript.includes('width="1919" height="394"'), "shared header uses the official responsive logo asset"],
+  [css.includes('.header-logo{width:210px;height:52px') && css.includes('.header-logo{width:165px;height:44px') && css.includes('.header-logo{width:160px}'), "official header logo desktop and mobile sizing"],
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
   [html.includes('https://sydneypick.com/'), "canonical domain"],
