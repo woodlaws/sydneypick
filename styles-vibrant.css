@@ -19,7 +19,7 @@ html,body{background:#fafcfd;color:var(--ink)}
 .guide-button:hover,.primary-button:hover,.page-button:hover,.search-button:hover,.magazineSearch button:hover,.lead-submit:hover,.contact-submit:hover,.cta-button:hover,.button-primary:hover{background:#f25248;color:#073b52;border-color:#f25248;box-shadow:0 12px 26px rgba(242,82,72,.24)}
 :where(a,button,input,select,textarea):focus-visible{outline:3px solid #00a9d6;outline-offset:3px}
 
-.hero-shade{background:linear-gradient(90deg,rgba(3,38,58,.72) 0%,rgba(3,38,58,.48) 35%,rgba(3,38,58,.18) 64%,rgba(3,38,58,.03) 100%),linear-gradient(0deg,rgba(3,38,58,.22) 0%,rgba(3,38,58,.06) 38%,transparent 68%)}
+.hero-shade{background:linear-gradient(90deg,rgba(3,38,58,.74) 0%,rgba(3,38,58,.48) 34%,rgba(3,38,58,.16) 62%,rgba(3,38,58,.03) 100%),linear-gradient(0deg,rgba(3,38,58,.2) 0%,rgba(3,38,58,.05) 38%,transparent 68%)}
 .itinerary-hero::after{background:linear-gradient(90deg,rgba(3,38,58,.74) 0%,rgba(3,38,58,.48) 38%,rgba(3,38,58,.2) 65%,rgba(3,38,58,.04) 100%),linear-gradient(0deg,rgba(3,38,58,.22),transparent 42%)}
 .page-hero::after,body .detail-hero::after{background:linear-gradient(90deg,rgba(3,38,58,.76) 0%,rgba(3,38,58,.5) 38%,rgba(3,38,58,.22) 64%,rgba(3,38,58,.04) 100%),linear-gradient(0deg,rgba(3,38,58,.24),rgba(3,38,58,.06) 40%,transparent 68%)}
 .area-hero::after{background:linear-gradient(90deg,rgba(3,38,58,.76) 0%,rgba(3,38,58,.48) 38%,rgba(3,38,58,.18) 66%,rgba(3,38,58,.04) 100%),linear-gradient(0deg,rgba(3,38,58,.22),transparent 44%)}
