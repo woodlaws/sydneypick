@@ -3,7 +3,7 @@ import { areaGuides, renderAreaGuide } from "./area-guides.mjs";
 import { travelPrepPages, renderTravelPrepHub, renderTravelPrepPage } from "./travel-prep-pages.mjs";
 import { foodPages, restaurantFieldSchema, restaurantRecords, renderFoodHub, renderFoodPage } from "./food-pages.mjs";
 import { shoppingPages, shoppingProductSchema, shoppingProducts, sdfStoreData, renderShoppingHub, renderShoppingPage } from "./shopping-pages.mjs";
-import { loadMagazinePosts, magazineCategories, renderMagazineHub, renderMagazineCategory, renderMagazineSearch, renderMagazinePost, renderAuthorPage, renderNotFound, renderRss } from "./magazine-pages.mjs";
+import { loadMagazinePosts, magazineCategories, renderMagazineHubV2, renderMagazineCategory, renderMagazineSearch, renderMagazinePost, renderAuthorPage, renderNotFound, renderRss } from "./magazine-pages.mjs";
 import { renderFreeGuide, renderGuideComplete, renderGuideSample, renderPrivacy } from "./lead-pages.mjs";
 import { renderAbout, renderOperator, renderEditorialPolicy, renderPartnership, renderContact } from "./trust-pages.mjs";
 
@@ -32,7 +32,7 @@ const generatedShoppingPages = shoppingPages.map(renderShoppingPage);
 const shoppingJs = await readFile("src/shopping.js", "utf8");
 const shoppingCss = await readFile("styles-shopping.css", "utf8");
 const magazinePosts = await loadMagazinePosts();
-const magazineHub = renderMagazineHub(magazinePosts);
+const magazineHub = renderMagazineHubV2(magazinePosts);
 const magazineCategoriesHtml = magazineCategories.map((category) => renderMagazineCategory(category, magazinePosts));
 const magazineSearch = renderMagazineSearch(magazinePosts);
 const magazineDetails = magazinePosts.map((post) => renderMagazinePost(post, magazinePosts));
@@ -132,7 +132,8 @@ const assertions = [
   [magazinePosts.every((post) => ["title","slug","description","category","tags","author","publishedAt","updatedAt","heroImage","heroImageAlt","ogImage","featured","recommended","readingTime","sources","relatedPosts","relatedAreas","relatedItineraries","status","content"].every((field) => post[field] !== undefined)), "magazine content fields"],
   [magazineCategories.length === 9 && magazineCategories.every(({ slug }) => /^[a-z0-9-]+$/.test(slug)), "nine consistent magazine category slugs"],
   [[magazineHub, ...magazineDetails].every((page) => (page.match(/<h1(?:\s|>)/g) || []).length === 1), "one H1 per magazine page"],
-  [magazineHub.includes('class="mag-hero-content"') && magazineHub.includes('class="magazine-hero-title"') && magazineHub.includes('class="magazine-title-brand"') && magazineHub.includes('class="mag-category-nav-inner"'), "centered magazine hero and category navigation structure"],
+  [magazineHub.includes('class="magazineHeroInner"') && magazineHub.includes('class="magazineTitle"') && magazineHub.includes('class="magazineDescription"') && magazineHub.includes('class="mag-category-nav-inner categoryNavigationInner"'), "centered magazine hero and category navigation structure"],
+  [magazineCss.includes('.magazineTitle{position:static;width:100%;max-width:1100px') && magazineCss.includes('font-size:72px;line-height:1.08') && !magazineHub.includes('class="mag-hero"'), "magazine hub title uses fixed scoped desktop typography"],
   [magazineDetails.every((page) => page.includes('"@type":"Article"') && page.includes('"@type":"BreadcrumbList"') && page.includes('"@type":"FAQPage"')), "article, breadcrumb and visible FAQ schemas"],
   [magazinePosts.every((post) => post.toc.some(({ level }) => level === 2)) && magazineDetails.every((page) => page.includes('class="article-toc"')), "automatic H2 and H3 table of contents"],
   [magazineSearch.includes("window.__MAGAZINE_INDEX__") && magazineJs.includes("URLSearchParams") && magazineJs.includes("제목, 요약, 카테고리"), "client-side title summary category search"],

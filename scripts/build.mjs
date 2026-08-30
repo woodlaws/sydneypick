@@ -4,7 +4,7 @@ import { areaGuides, renderAreaGuide } from "./area-guides.mjs";
 import { travelPrepPages, renderTravelPrepHub, renderTravelPrepPage } from "./travel-prep-pages.mjs";
 import { foodPages, renderFoodHub, renderFoodPage } from "./food-pages.mjs";
 import { shoppingPages, renderShoppingHub, renderShoppingPage } from "./shopping-pages.mjs";
-import { loadMagazinePosts, magazineCategories, renderMagazineHub, renderMagazineCategory, renderMagazineSearch, renderMagazinePost, renderAuthorPage, renderNotFound, renderRss } from "./magazine-pages.mjs";
+import { loadMagazinePosts, magazineCategories, renderMagazineHubV2, renderMagazineCategory, renderMagazineSearch, renderMagazinePost, renderAuthorPage, renderNotFound, renderRss } from "./magazine-pages.mjs";
 import { renderFreeGuide, renderGuideComplete, renderGuideSample, renderPrivacy } from "./lead-pages.mjs";
 import { renderAbout, renderOperator, renderEditorialPolicy, renderPartnership, renderContact } from "./trust-pages.mjs";
 
@@ -89,7 +89,7 @@ await mkdir(join(out, "shopping"), { recursive: true });
 for (const page of shoppingPages) {
   await writeFile(join(out, "shopping", `${page.slug}.html`), render(renderShoppingPage(page)));
 }
-await writeFile(join(out, "magazine.html"), render(renderMagazineHub(magazinePosts)));
+await writeFile(join(out, "magazine.html"), render(renderMagazineHubV2(magazinePosts)));
 await mkdir(join(out, "magazine", "category"), { recursive: true });
 for (const category of magazineCategories) {
   await writeFile(join(out, "magazine", "category", `${category.slug}.html`), render(renderMagazineCategory(category, magazinePosts)));
