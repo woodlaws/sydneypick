@@ -15,3 +15,12 @@
 ## 이미지
 
 여행 사진은 Unsplash 라이선스 이미지를 사용하며, 사이트의 목업 이미지를 페이지에 삽입하지 않습니다.
+
+## 배포 구조
+
+- 프레임워크: Other / Vanilla Static Site
+- 빌드 명령: `npm run build`
+- 출력 폴더: `dist`
+- `src/site.js`: 브라우저 전용 인터랙션
+- `scripts/preview.mjs`: 로컬 production preview 전용 서버
+- 환경변수: 필요 없음

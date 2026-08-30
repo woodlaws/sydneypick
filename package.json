@@ -4,8 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node server.mjs",
+    "dev": "node scripts/preview.mjs",
     "build": "node scripts/build.mjs",
-    "check": "node scripts/check.mjs"
+    "preview": "node scripts/preview.mjs --root dist",
+    "check": "node scripts/check.mjs",
+    "check:links": "node scripts/audit-site.mjs links",
+    "check:seo": "node scripts/audit-site.mjs seo",
+    "check:images": "node scripts/audit-site.mjs images",
+    "check:runtime": "node scripts/audit-site.mjs runtime",
+    "validate": "node scripts/build.mjs && node scripts/check.mjs && node scripts/audit-site.mjs all"
   }
 }

@@ -1,0 +1,8 @@
+node_modules/
+.vercel/
+sydney-pick-site.tar.gz
+qa-lighthouse-*.json
+
+# Retain editable image masters locally; production uses optimized AVIF variants.
+public/images/hero/*.png
+dist/public/images/hero/*.png

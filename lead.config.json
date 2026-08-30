@@ -1,0 +1,14 @@
+{
+  "formEndpoint": "",
+  "googleFormUrl": "",
+  "contactEndpoint": "",
+  "contactGoogleFormUrl": "",
+  "privacyReady": false,
+  "emailDeliveryMode": "web-only",
+  "consultationUrl": "/contact",
+  "kakaoChannelUrl": "",
+  "privacyOfficer": "",
+  "privacyContactEmail": "",
+  "retentionPeriod": "",
+  "effectiveDate": ""
+}

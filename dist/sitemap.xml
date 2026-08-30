@@ -5,4 +5,51 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url><loc>https://sydneypick.com/itineraries</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sydneypick.com/itineraries/sydney-5n6d</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sydneypick.com/areas</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sydneypick.com/areas/circular-quay</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/areas/sydney-opera-house</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/areas/the-rocks</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/areas/bondi-beach</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/areas/manly</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/areas/blue-mountains</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/travel-prep</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sydneypick.com/travel-prep/airport-to-city</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/travel-prep/opal-card</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/travel-prep/esim</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/travel-prep/money-payment</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/travel-prep/checklist</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/food</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sydneypick.com/food/by-area</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/food/brunch-cafes</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/food/harbour-dining</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/food/korean-food</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/shopping</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sydneypick.com/shopping/australia-gifts</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/shopping/manuka-honey</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/shopping/propolis</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/shopping/sdf</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/shopping/checklist</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://sydneypick.com/magazine</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/authors/editor</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/category/itineraries</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/category/areas</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/category/transport</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/category/shopping</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/category/mistakes-safety</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/sydney-5-night-6-day-itinerary</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/sydney-airport-to-city</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/sydney-opal-card-guide</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/bondi-beach-half-day-course</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/australia-gift-shopping-list</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/magazine/sydney-travel-mistakes</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/free-guide</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/free-guide/sample</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/privacy</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/about</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/about/hunsoo-lim</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/editorial-policy</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/partnership</loc><lastmod>2026-08-29</lastmod></url>
+  <url><loc>https://sydneypick.com/contact</loc><lastmod>2026-08-29</lastmod></url>
 </urlset>

@@ -1,0 +1,17 @@
+{
+  "name": "시드니픽",
+  "short_name": "시드니픽",
+  "description": "한국인을 위한 시드니 자유여행 가이드",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#087da6",
+  "icons": [
+    {
+      "src": "/public/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
