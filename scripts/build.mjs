@@ -7,6 +7,7 @@ import { shoppingPages, renderShoppingHub, renderShoppingPage } from "./shopping
 import { loadMagazinePosts, magazineCategories, renderMagazineHubV2, renderMagazineCategory, renderMagazineSearch, renderMagazinePost, renderAuthorPage, renderNotFound, renderRss } from "./magazine-pages.mjs";
 import { renderFreeGuide, renderGuideComplete, renderGuideSample, renderPrivacy } from "./lead-pages.mjs";
 import { renderAbout, renderOperator, renderEditorialPolicy, renderPartnership, renderContact } from "./trust-pages.mjs";
+import { renderItineraryOverview } from "./itinerary-5n6d-overview.mjs";
 
 const root = process.cwd();
 const out = join(root, "dist");
@@ -63,13 +64,29 @@ function render(html) {
 }
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
+await mkdir(join(out, "server"), { recursive: true });
+await writeFile(join(out, "server", "index.js"), `export default {
+  async fetch(request, env) {
+    if (!env.ASSETS?.fetch) return new Response("Static assets unavailable", { status: 503 });
+    const response = await env.ASSETS.fetch(request);
+    if (response.status !== 404) return response;
+    const url = new URL(request.url);
+    if (!url.pathname.includes(".") && !url.pathname.endsWith("/")) {
+      url.pathname += ".html";
+      const htmlResponse = await env.ASSETS.fetch(new Request(url, request));
+      if (htmlResponse.status !== 404) return htmlResponse;
+    }
+    return response;
+  },
+};\n`);
 for (const file of ["styles.css", "styles-vibrant.css", "robots.txt", "sitemap.xml"]) {
   try { await cp(join(root, file), join(out, file)); } catch (error) { if (error.code !== "ENOENT") throw error; }
 }
 await writeFile(join(out, "index.html"), render(await readFile(join(root, "index.html"), "utf8")));
 await writeFile(join(out, "itineraries.html"), render(await readFile(join(root, "pages", "itineraries.html"), "utf8")));
 await mkdir(join(out, "itineraries"), { recursive: true });
-await writeFile(join(out, "itineraries", "sydney-5n6d.html"), render(await readFile(join(root, "pages", "sydney-5n6d.html"), "utf8")));
+const itinerary5n6dPage = (await readFile(join(root, "pages", "sydney-5n6d.html"), "utf8")).replace("<!-- ITINERARY_5N6D_OVERVIEW -->", renderItineraryOverview());
+await writeFile(join(out, "itineraries", "sydney-5n6d.html"), render(itinerary5n6dPage));
 await writeFile(join(out, "areas.html"), render(await readFile(join(root, "pages", "areas.html"), "utf8")));
 await mkdir(join(out, "areas"), { recursive: true });
 await writeFile(join(out, "areas", "circular-quay.html"), render(await readFile(join(root, "pages", "circular-quay.html"), "utf8")));
@@ -144,6 +161,7 @@ await cp(join(root, "styles-trust.css"), join(out, "styles-trust.css"));
 await mkdir(join(out, "assets"), { recursive: true });
 await cp(join(root, "src", "site.js"), join(out, "assets", "site.js"));
 await cp(join(root, "src", "itineraries.js"), join(out, "assets", "itineraries.js"));
+await cp(join(root, "src", "itinerary-overview.js"), join(out, "assets", "itinerary-overview.js"));
 await cp(join(root, "src", "travel-prep.js"), join(out, "assets", "travel-prep.js"));
 await cp(join(root, "src", "food.js"), join(out, "assets", "food.js"));
 await cp(join(root, "src", "shopping.js"), join(out, "assets", "shopping.js"));

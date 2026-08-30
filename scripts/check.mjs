@@ -6,6 +6,7 @@ import { shoppingPages, shoppingProductSchema, shoppingProducts, sdfStoreData, r
 import { loadMagazinePosts, magazineCategories, renderMagazineHubV2, renderMagazineCategory, renderMagazineSearch, renderMagazinePost, renderAuthorPage, renderNotFound, renderRss } from "./magazine-pages.mjs";
 import { renderFreeGuide, renderGuideComplete, renderGuideSample, renderPrivacy } from "./lead-pages.mjs";
 import { renderAbout, renderOperator, renderEditorialPolicy, renderPartnership, renderContact } from "./trust-pages.mjs";
+import { itinerary5n6d, renderItineraryOverview } from "./itinerary-5n6d-overview.mjs";
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
@@ -14,6 +15,8 @@ const js = await readFile("src/site.js", "utf8");
 const itineraryHub = await readFile("pages/itineraries.html", "utf8");
 const itineraryDetail = await readFile("pages/sydney-5n6d.html", "utf8");
 const itineraryJs = await readFile("src/itineraries.js", "utf8");
+const itineraryOverviewJs = await readFile("src/itinerary-overview.js", "utf8");
+const itineraryOverview = renderItineraryOverview();
 const pagesCss = await readFile("styles-pages.css", "utf8");
 const areasHub = await readFile("pages/areas.html", "utf8");
 const circularQuay = await readFile("pages/circular-quay.html", "utf8");
@@ -87,6 +90,10 @@ const assertions = [
   [itineraryDetail.includes("처음 가는 시드니") && itineraryDetail.includes('"@type":"Article"'), "5n6d detail content and schema"],
   [[itineraryDetail, itineraryHub].every((page) => (page.match(/<h1(?:\s|>)/g) || []).length === 1), "one H1 per itinerary page"],
   [itineraryJs.includes('typeof document !== "undefined"'), "itinerary browser bootstrap is guarded"],
+  [itinerary5n6d.length === 6 && itinerary5n6d.every((day, index) => day.day === index + 1 && day.items.length >= 6), "5n6d overview uses complete shared day data"],
+  [itineraryOverview.includes('id="plan-overview"') && itineraryOverview.includes('data-plan-download') && itineraryOverview.includes('data-mobile-plan="5"'), "5n6d overview renders desktop and mobile schedules"],
+  [itineraryOverviewJs.includes("canvas.toBlob") && itineraryOverviewJs.includes("window.print()") && itineraryOverviewJs.includes("navigator.share"), "5n6d overview save print and share actions"],
+  [pagesCss.includes(".plan-overview .plan-grid") && pagesCss.includes("@page{size:A4 landscape") && pagesCss.includes(".mobile-plan-card"), "5n6d overview scoped responsive and print styles"],
   [[areasHub, circularQuay, operaHouse].every((page) => (page.match(/<h1(?:\s|>)/g) || []).length === 1), "one H1 per area page"],
   [areasHub.includes("ItemList") && circularQuay.includes('"@type":"Place"') && operaHouse.includes('"@type":"TouristAttraction"'), "area structured data"],
   [circularQuay.includes('"@type":"FAQPage"') && operaHouse.includes('"@type":"FAQPage"'), "visible FAQ schema"],
