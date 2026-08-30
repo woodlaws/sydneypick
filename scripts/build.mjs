@@ -36,6 +36,15 @@ function normalizeImages(html) {
     return `<img${next}>`;
   });
 }
+function normalizeSiteHeader(html) {
+  return html.replace(/<header class="site-header">(?!\s*<div class="site-header__inner">)([\s\S]*?)<\/header>/, '<header class="site-header"><div class="site-header__inner">$1</div></header>');
+}
+function normalizeArticleHero(html) {
+  return html.replace(/<header class="article-header wrap">([\s\S]*?)<\/header><figure class="article-hero"><img([^>]*)><figcaption>([^<]*)<\/figcaption><\/figure>/, (_match, content, imageAttributes, credit) => {
+    const heroContent = content.replace("<h1>", '<h1 class="detail-hero-title">').replace('<p class="article-deck">', '<p class="article-deck detail-hero-lead">');
+    return `<header class="article-header detail-hero"><img class="detail-hero-image"${imageAttributes}><div class="wrap detail-hero-content">${heroContent}</div><span class="detail-hero-credit">${credit}</span></header>`;
+  });
+}
 function render(html) {
   let output = html.replaceAll("__SITE_URL__", config.siteUrl).replaceAll("__LAST_UPDATED__", config.lastUpdated).replaceAll("__OG_IMAGE__", `${config.siteUrl}/public/og.png`).replaceAll("__CONSULTATION_URL__", leadConfig.consultationUrl).replaceAll('class="brand" href="#top"', 'class="brand" href="/"').replaceAll('href="/#areas"', 'href="/areas"').replaceAll('href="/#prepare"', 'href="/travel-prep"').replaceAll('href="/#food"', 'href="/food"').replaceAll('href="/#shopping"', 'href="/shopping"').replaceAll('href="/#magazine"', 'href="/magazine"').replaceAll('href="/#guide"', 'href="/free-guide"').replaceAll('href="#guide"', 'href="/free-guide"').replaceAll('https://unsplash.com/photos/cA8Oj_VuKKk/download?force=true&w=1200', 'https://images.unsplash.com/photo-1729936483375-e58027cfcdd2?auto=format&fit=crop&fm=jpg&q=82&w=1200').replaceAll('뉴사우스웨일스 해안의 푸른 바다와 모래사장', '포트스테판의 푸른 바다와 모래사장이 이어지는 해안 풍경').replaceAll('<p>기념품과 호주 선물 준비</p>', '<p><a href="/shopping">쇼핑픽에서 선물 기준 확인</a></p>').replaceAll('<p>일정과 위치에 따라 SDF 방문 검토</p>', '<p><a href="/shopping/sdf">일정과 위치에 따라 SDF 방문 검토</a></p>').replaceAll('확정되지 않은 개인 경력이나 방문 횟수 대신, 독자가 확인할 수 있는 제작 원칙과 업데이트 기준을 공개합니다.', '시드니픽 편집팀은 운영자 임헌수와 함께 확인 가능한 여행 경험, 공식 출처와 업데이트 기준을 공개합니다.').replaceAll('<h2>운영자 실제 정보 입력 영역</h2><p>이름·소개·프로필 이미지·담당 분야·연락 채널은 운영자가 확인한 자료를 받은 뒤 공개합니다.</p></div><span>자료 확인 후 업데이트</span>', '<h2>운영자 임헌수</h2><p>2023년 시드니를 14박 15일 동안 여행한 경험과 AI·마케팅 콘텐츠 운영 기준을 바탕으로 시드니픽을 운영합니다.</p><a href="/about/hunsoo-lim">운영자 소개 확인 →</a></div><span>실제 사진 입력 필요</span>');
   output = output.replaceAll('target="_blank" rel="noreferrer"', 'target="_blank" rel="noopener noreferrer"');
@@ -47,7 +56,7 @@ function render(html) {
   if (!output.includes('name="twitter:card"')) output = output.replace("</head>", '<meta name="twitter:card" content="summary_large_image"></head>');
   if (!output.includes('rel="manifest"')) output = output.replace("</head>", '<link rel="manifest" href="/public/site.webmanifest"></head>');
   if (!output.includes('/assets/accessibility.js')) output = output.replace("</body>", '<script src="/assets/accessibility.js" defer></script></body>');
-  return normalizeImages(replaceSiteFooter(output));
+  return normalizeImages(normalizeArticleHero(normalizeSiteHeader(replaceSiteFooter(output))));
 }
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
