@@ -22,9 +22,11 @@ const generatedAreaPages = areaGuides.map(renderAreaGuide);
 const prepHub = renderTravelPrepHub();
 const generatedPrepPages = travelPrepPages.map(renderTravelPrepPage);
 const prepJs = await readFile("src/travel-prep.js", "utf8");
+const prepCss = await readFile("styles-prep.css", "utf8");
 const foodHub = renderFoodHub();
 const generatedFoodPages = foodPages.map(renderFoodPage);
 const foodJs = await readFile("src/food.js", "utf8");
+const foodCss = await readFile("styles-food.css", "utf8");
 const shoppingHub = renderShoppingHub();
 const generatedShoppingPages = shoppingPages.map(renderShoppingPage);
 const shoppingJs = await readFile("src/shopping.js", "utf8");
@@ -96,6 +98,8 @@ const assertions = [
   [generatedPrepPages.every((page) => page.includes("BreadcrumbList") && page.includes('"@type":"FAQPage"')), "travel-prep breadcrumb and visible FAQ schema"],
   [generatedPrepPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "travel-prep update dates and sources"],
   [prepHub.includes("10단계") && prepHub.includes("data-prep-check") && prepHub.includes("/travel-prep/checklist"), "travel-prep hub steps and local checklist"],
+  [prepHub.includes('class="preparation-hero-title"><span>처음 가는 시드니</span><span>여행 준비 가이드</span>') && prepHub.includes('class="preparation-section-title"'), "travel-prep hub has dedicated title structures"],
+  [prepCss.includes('.preparation-hero-title{width:100%;max-width:850px') && !prepCss.includes('.prep-hero{position:relative;min-height:560px;aspect-ratio'), "travel-prep hero typography is scoped and full bleed"],
   [prepJs.includes('typeof document !== "undefined"') && prepJs.includes("localStorage") && !prepJs.includes("fetch("), "travel-prep browser code is guarded and local only"],
   [generatedPrepPages.find((page) => page.includes("준비물 체크리스트"))?.includes("data-custom-item-form"), "custom checklist item support"],
   [html.includes('href="/travel-prep"'), "homepage links travel-prep hub"],
@@ -106,6 +110,7 @@ const assertions = [
   [!foodHub.includes('"@type":"Restaurant"') && generatedFoodPages.every((page) => !page.includes('"@type":"Restaurant"')), "no Restaurant schema without verified venues"],
   [restaurantRecords.length === 0 && Object.keys(restaurantFieldSchema).length === 18, "empty verified restaurant data and reusable field schema"],
   [foodHub.includes("에디터 확인 후 업데이트") && foodHub.includes("제휴 준비 중"), "editorial and affiliate status labels"],
+  [foodHub.includes('class="food-hub-hero-title"><span>시드니 맛집과 카페,</span>') && foodCss.includes('.food-hub-hero-title{width:100%;max-width:920px') && !foodCss.includes('.food-hero{position:relative;min-height:590px;aspect-ratio'), "food hub hero typography is scoped and full bleed"],
   [foodJs.includes("dataFoodFilter") || foodJs.includes("foodFilter"), "food filter behavior"],
   [foodJs.includes("typeof document!=='undefined'") && !foodJs.includes("fetch("), "food browser code is server-safe"],
   [generatedFoodPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "food update dates and official sources"],
@@ -117,6 +122,7 @@ const assertions = [
   [!shoppingHub.includes('"@type":"Product"') && generatedShoppingPages.every((page) => !page.includes('"@type":"Product"') && !page.includes('"@type":"LocalBusiness"')), "no Product or LocalBusiness schema without verified data"],
   [shoppingProducts.length === 0 && Object.keys(shoppingProductSchema).length === 16 && sdfStoreData.address === null, "empty verified shopping data and reusable schemas"],
   [shoppingHub.includes("편집 추천") && shoppingHub.includes("제휴 링크") && shoppingHub.includes("유료 광고") && shoppingHub.includes("SDF 취급상품"), "shopping disclosure labels"],
+  [shoppingHub.includes('class="shopping-hub-hero-title"><span>호주 여행 쇼핑,</span>') && shoppingCss.includes('.shopping-hero .shopping-hub-hero-title{width:100%;max-width:850px'), "shopping hub hero typography is scoped"],
   [shoppingJs.includes("localStorage") && shoppingJs.includes("data-shopping-filter") && shoppingJs.includes("typeof document!=='undefined'") && !shoppingJs.includes("fetch("), "shopping interactions are local and server-safe"],
   [shoppingCss.includes("aspect-ratio:16/9") && shoppingCss.includes("@media(max-width:600px)"), "shopping image ratio and mobile layout"],
   [generatedShoppingPages.every((page) => page.includes("최종 업데이트: __LAST_UPDATED__") && page.includes("공식 정보 확인")), "shopping update dates and official sources"],
