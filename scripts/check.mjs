@@ -13,6 +13,7 @@ const js = await readFile("src/site.js", "utf8");
 const itineraryHub = await readFile("pages/itineraries.html", "utf8");
 const itineraryDetail = await readFile("pages/sydney-5n6d.html", "utf8");
 const itineraryJs = await readFile("src/itineraries.js", "utf8");
+const pagesCss = await readFile("styles-pages.css", "utf8");
 const areasHub = await readFile("pages/areas.html", "utf8");
 const circularQuay = await readFile("pages/circular-quay.html", "utf8");
 const operaHouse = await readFile("pages/sydney-opera-house.html", "utf8");
@@ -71,6 +72,8 @@ const assertions = [
   [html.includes('/assets/site.js') && !html.includes('/app.js'), "browser code is loaded only from static assets"],
   [js.includes('typeof document !== "undefined"'), "browser bootstrap is guarded from server imports"],
   [itineraryHub.includes("내 여행에 맞는") && itineraryHub.includes("ItemList"), "itinerary hub content and schema"],
+  [itineraryHub.includes('class="itinerary-hero-title"><span>내 여행에 맞는</span><span>시드니 일정</span>') && itineraryHub.includes('class="lead itinerary-hero-lead"'), "dedicated itinerary hero title and lead structure"],
+  [pagesCss.includes('.itinerary-hero-title{width:100%;max-width:900px') && !pagesCss.includes('.page-hero h1{margin:0;font-size'), "itinerary typography is scoped and shared page hero has no oversized title"],
   [itineraryDetail.includes("처음 가는 시드니") && itineraryDetail.includes('"@type":"Article"'), "5n6d detail content and schema"],
   [[itineraryDetail, itineraryHub].every((page) => (page.match(/<h1(?:\s|>)/g) || []).length === 1), "one H1 per itinerary page"],
   [itineraryJs.includes('typeof document !== "undefined"'), "itinerary browser bootstrap is guarded"],
