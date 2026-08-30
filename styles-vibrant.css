@@ -1,0 +1,62 @@
+/* Sydney Pick visual refresh: colour, imagery and surface treatment only. */
+:root{
+  --harbour:#008db5;--harbour-2:#00a9d6;--deep:#073b52;--navy:#073b52;
+  --sky:#e9f9fd;--pale:#f4fbfd;--coral:#ff6b5e;--sand:#fff8ef;
+  --ink:#092f40;--muted:#55727e;--line:#d8e8ed;--white:#fff;
+  --shadow:0 12px 32px rgba(7,59,82,.09);
+  --shop-blue:#008db5;--shop-deep:#073b52;--shop-coral:#ff6b5e;--shop-cream:#fff8ef;--shop-line:#d8e8ed;--shop-ink:#092f40;
+  --mag-blue:#008db5;--mag-deep:#073b52;--mag-coral:#ff6b5e;--mag-pale:#e9f9fd;--mag-ink:#092f40;--mag-line:#d8e8ed;
+  --lead-coral:#ff6b5e;--lead-blue:#008db5;--lead-deep:#073b52;--lead-sky:#e9f9fd;--lead-ink:#092f40;--lead-line:#d8e8ed;
+}
+html,body{background:#fafcfd;color:var(--ink)}
+.site-header{background:#fff;border-bottom-color:#e3eef1;box-shadow:0 4px 18px rgba(7,59,82,.045);backdrop-filter:none}
+.brand,.desktop-nav a,.mobile-menu a{color:var(--navy)}
+.desktop-nav a:hover,.desktop-nav a[aria-current="page"],.mobile-menu a:hover{color:var(--harbour)}
+.desktop-nav a::after{background:var(--harbour-2)}
+
+/* Navy labels on the specified coral preserve AA contrast at normal text sizes. */
+.guide-button,.primary-button,.page-button,.search-button,.magazineSearch button,.lead-submit,.contact-submit,.cta-button,.button-primary{background:#ff6b5e;color:#073b52;border-color:#ff6b5e;box-shadow:0 9px 22px rgba(255,107,94,.22)}
+.guide-button:hover,.primary-button:hover,.page-button:hover,.search-button:hover,.magazineSearch button:hover,.lead-submit:hover,.contact-submit:hover,.cta-button:hover,.button-primary:hover{background:#f25248;color:#073b52;border-color:#f25248;box-shadow:0 12px 26px rgba(242,82,72,.24)}
+:where(a,button,input,select,textarea):focus-visible{outline:3px solid #00a9d6;outline-offset:3px}
+
+.hero-shade{background:linear-gradient(90deg,rgba(3,38,58,.72) 0%,rgba(3,38,58,.48) 35%,rgba(3,38,58,.18) 64%,rgba(3,38,58,.03) 100%),linear-gradient(0deg,rgba(3,38,58,.22) 0%,rgba(3,38,58,.06) 38%,transparent 68%)}
+.itinerary-hero::after{background:linear-gradient(90deg,rgba(3,38,58,.74) 0%,rgba(3,38,58,.48) 38%,rgba(3,38,58,.2) 65%,rgba(3,38,58,.04) 100%),linear-gradient(0deg,rgba(3,38,58,.22),transparent 42%)}
+.page-hero::after,body .detail-hero::after{background:linear-gradient(90deg,rgba(3,38,58,.76) 0%,rgba(3,38,58,.5) 38%,rgba(3,38,58,.22) 64%,rgba(3,38,58,.04) 100%),linear-gradient(0deg,rgba(3,38,58,.24),rgba(3,38,58,.06) 40%,transparent 68%)}
+.area-hero::after{background:linear-gradient(90deg,rgba(3,38,58,.76) 0%,rgba(3,38,58,.48) 38%,rgba(3,38,58,.18) 66%,rgba(3,38,58,.04) 100%),linear-gradient(0deg,rgba(3,38,58,.22),transparent 44%)}
+.food-hero::after{background:linear-gradient(90deg,rgba(3,38,58,.78) 0%,rgba(3,38,58,.5) 38%,rgba(3,38,58,.2) 66%,rgba(3,38,58,.05) 100%),linear-gradient(0deg,rgba(3,38,58,.24),transparent 44%)}
+.prep-hero::after{background:linear-gradient(90deg,rgba(3,38,58,.78) 0%,rgba(3,38,58,.5) 38%,rgba(3,38,58,.22) 66%,rgba(3,38,58,.05) 100%),linear-gradient(0deg,rgba(3,38,58,.24),transparent 44%)}
+.shopping-hero::after{background:linear-gradient(90deg,rgba(3,38,58,.76) 0%,rgba(3,38,58,.46) 40%,rgba(3,38,58,.16) 68%,rgba(3,38,58,.03) 100%),linear-gradient(0deg,rgba(3,38,58,.24),transparent 44%)}
+
+.hero-media img{filter:brightness(1.05) contrast(1.08) saturate(1.1)}
+.itinerary-hero>img,.page-hero>img,.detail-hero-image,.area-hero>img{filter:brightness(1.04) contrast(1.07) saturate(1.09)}
+.food-hero>img{filter:brightness(1.03) contrast(1.06) saturate(1.06)}
+.prep-hero>img{filter:brightness(1.04) contrast(1.06) saturate(1.05)}
+.shopping-hero>img{filter:brightness(1.04) contrast(1.06) saturate(1.08)}
+.detail-hero[data-image-tone="night"] .detail-hero-image{filter:brightness(1.01) contrast(1.05) saturate(1.05)}
+.detail-hero[data-image-tone="food"] .detail-hero-image{filter:brightness(1.03) contrast(1.05) saturate(1.04)}
+.area-guide-card img,.guide-photo,.day-photo,.duration-media img,.food-photo-band img,.shopping-editorial img,.mag-card img,.article-hero img,.feature-split img{filter:brightness(1.03) contrast(1.06) saturate(1.08)}
+.food-page :is(.food-photo-band img,.feature-split img,.food-card img){filter:brightness(1.03) contrast(1.05) saturate(1.05)}
+.area-guide-card img,.duration-media img,.mag-card img{transition:filter .28s ease,transform .28s ease}
+.area-guide-card:hover img,.duration-card:hover .duration-media img,.mag-card:hover img{filter:brightness(1.04) contrast(1.07) saturate(1.13);transform:scale(1.03)}
+
+.content-section,.editorial-section,.food-page .food-section,.shopping-section,.prep-section,.mag-section{background:#fff}
+.content-section.tint,.editorial-section.tint,.prep-section.tint,.shopping-section.soft,.mag-section.pale,.related-reading,.category-hero,.preview-section,.food-page .food-section.tint{background:#e9f9fd}
+.schedule-section,.journey-section,.prepare-section{background:#fafcfd}
+body:not(.food-page) .food-section{background:#fff8ef}
+:is(.plan-card,.duration-card,.area-guide-card,.food-card,.shopping-card,.mag-card,.decision-card,.place-item,.info-panel,.resource-card){background:#fff;border-color:#d8e8ed;box-shadow:0 10px 28px rgba(7,59,82,.07)}
+:is(.plan-card,.duration-card,.area-guide-card,.food-card,.shopping-card,.mag-card,.decision-card,.place-item):hover{border-color:#88d7e8;box-shadow:0 16px 34px rgba(7,59,82,.12)}
+.food-card.feature,.shopping-card.feature{background:#e9f9fd;color:#073b52;border-color:#88d7e8}
+.food-card.feature :is(h2,h3,p,a,span),.shopping-card.feature :is(h2,h3,p,a,span){color:#073b52}
+.badge.pending,.status,.editor-status{background:#e9f9fd;color:#073b52;border-color:#b8e3ec}
+
+.magazineHero{background:#e5f8fd;color:#073b52}
+.magazineHero::before{background:linear-gradient(120deg,#e5f8fd 0 64%,#fff8ef 64%)}
+.magazineEyebrow{color:#008db5}
+.magazineSearch{background:#fff;border-color:#d8e8ed;box-shadow:0 14px 32px rgba(7,59,82,.09)}
+.categoryNavigation{background:#fff;border-color:#d8e8ed}
+.categoryNavigationInner a:hover,.categoryNavigationInner a[aria-current="page"]{background:#e9f9fd;color:#073b52;border-color:#88d7e8}
+.hero-copy,.page-hero-content,.detail-hero-content,.area-hero-content,.food-hero-content,.prep-hero-content,.shopping-hero-content{text-shadow:0 2px 14px rgba(3,38,58,.2)}
+.site-footer{background:#073b52}
+@media(max-width:600px){
+  body .detail-hero::after{background:linear-gradient(180deg,rgba(3,38,58,.08) 0%,rgba(3,38,58,.32) 38%,rgba(3,38,58,.76) 100%),linear-gradient(90deg,rgba(3,38,58,.42),rgba(3,38,58,.08))}
+}

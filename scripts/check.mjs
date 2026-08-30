@@ -9,6 +9,7 @@ import { renderAbout, renderOperator, renderEditorialPolicy, renderPartnership, 
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
+const vibrantCss = await readFile("styles-vibrant.css", "utf8");
 const js = await readFile("src/site.js", "utf8");
 const itineraryHub = await readFile("pages/itineraries.html", "utf8");
 const itineraryDetail = await readFile("pages/sydney-5n6d.html", "utf8");
@@ -57,6 +58,9 @@ const contactJs = await readFile("src/contact.js", "utf8");
 const trustCss = await readFile("styles-trust.css", "utf8");
 const buildScript = await readFile("scripts/build.mjs", "utf8");
 const assertions = [
+  [vibrantCss.includes("--harbour:#008db5") && vibrantCss.includes("--coral:#ff6b5e") && vibrantCss.includes("--ink:#092f40"), "vibrant Sydney palette tokens"],
+  [vibrantCss.includes("brightness(1.05) contrast(1.08) saturate(1.1)") && vibrantCss.includes("body .detail-hero::after"), "scoped image enhancement and directional hero overlays"],
+  [buildScript.includes("/styles-vibrant.css") && buildScript.includes('"styles-vibrant.css"'), "vibrant visual layer is linked and published"],
   [html.includes('lang="ko"'), "Korean document language"],
   [html.includes('name="viewport"'), "mobile viewport"],
   [html.includes('https://sydneypick.com/'), "canonical domain"],

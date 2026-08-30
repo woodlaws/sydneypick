@@ -55,12 +55,13 @@ function render(html) {
   if (output.includes('<meta name="robots" content="noindex')) output = output.replace(/<link rel="canonical"[^>]*>/, "");
   if (!output.includes('name="twitter:card"')) output = output.replace("</head>", '<meta name="twitter:card" content="summary_large_image"></head>');
   if (!output.includes('rel="manifest"')) output = output.replace("</head>", '<link rel="manifest" href="/public/site.webmanifest"></head>');
+  if (!output.includes('/styles-vibrant.css')) output = output.replace("</head>", '<link rel="stylesheet" href="/styles-vibrant.css"></head>');
   if (!output.includes('/assets/accessibility.js')) output = output.replace("</body>", '<script src="/assets/accessibility.js" defer></script></body>');
   return normalizeImages(normalizeArticleHero(normalizeSiteHeader(replaceSiteFooter(output))));
 }
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
-for (const file of ["styles.css", "robots.txt", "sitemap.xml"]) {
+for (const file of ["styles.css", "styles-vibrant.css", "robots.txt", "sitemap.xml"]) {
   try { await cp(join(root, file), join(out, file)); } catch (error) { if (error.code !== "ENOENT") throw error; }
 }
 await writeFile(join(out, "index.html"), render(await readFile(join(root, "index.html"), "utf8")));
