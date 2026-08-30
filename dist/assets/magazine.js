@@ -1,5 +1,6 @@
 function initMagazine(){
  const header=document.querySelector('.site-header'),menu=document.querySelector('.menu-toggle');menu?.addEventListener('click',()=>{const open=header?.classList.toggle('menu-open');menu.setAttribute('aria-expanded',String(Boolean(open)))});document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>header?.classList.remove('menu-open')));
+ const activeCategory=document.querySelector('.magazineCategoryNavInner .active');if(activeCategory&&matchMedia('(max-width: 768px)').matches)requestAnimationFrame(()=>activeCategory.scrollIntoView({block:'nearest',inline:'center'}));
  const more=document.querySelector('[data-mag-more]'),cards=[...document.querySelectorAll('[data-mag-card]')];if(more){let shown=6;const update=()=>{cards.forEach((c,i)=>c.hidden=i>=shown);more.hidden=shown>=cards.length};update();more.addEventListener('click',()=>{shown+=6;update()})}
  const form=document.querySelector('[data-mag-search]'),results=document.querySelector('[data-search-results]'),summary=document.querySelector('[data-search-summary]'),data=window.__MAGAZINE_INDEX__||[];
  const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
