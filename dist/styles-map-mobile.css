@@ -1,8 +1,6 @@
 .map-page{width:100%;max-width:100%;overflow:hidden}
-@media(max-width:600px){
-  .map-page .wrap{width:100vw;max-width:100vw;padding-inline:20px}
-  .map-layout,.map-panel,.map-results,.map-intro,.map-canvas{width:calc(100vw - 40px);max-width:calc(100vw - 40px);min-width:0}
-  .map-hero>div>p:last-child,.map-intro>p,.map-results-header>p{max-width:100%;white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
-  .map-intro h2,.map-results-header h2{max-width:100%;font-size:32px;white-space:normal;word-break:keep-all;overflow-wrap:anywhere}
-  .map-controls{width:100vw;max-width:100vw}
+@media(max-width:767px){
+  .map-page .wrap{width:100%;max-width:100%;padding-inline:20px}
+  .map-hero>div>p:last-child,.map-intro>p,.map-results-header p{max-width:100%;white-space:normal;word-break:keep-all;overflow-wrap:normal}
+  .map-intro h2,.map-results-header h2{max-width:100%;white-space:normal;word-break:keep-all;overflow-wrap:normal}
 }

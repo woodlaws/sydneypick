@@ -195,11 +195,11 @@ const assertions = [
   [trustCss.includes('@media(max-width:600px)') && trustCss.includes('aspect-ratio:4/5') && trustCss.includes('aspect-ratio:16/10'), "trust pages responsive layout and varied image ratios"],
   [["/about","/about/hunsoo-lim","/editorial-policy","/partnership","/contact","/privacy"].every((path) => buildScript.includes(`href="${path}"`)), "global footer contains all trust links"],
   [mapRegions.length === 9 && mapPlaces.length === 27 && mapRegions.every(({ id }) => mapPlaces.filter((place) => place.region === id).length >= 3), "map has nine travel regions with at least three places each"],
-  [mapPage.includes('aria-label="시드니 여행 권역 위치 안내도"') || mapPage.includes('aria-labelledby="sydney-map-title sydney-map-desc"'), "map SVG has an accessible name and description"],
+  [mapPage.includes('id="sydney-travel-map"') && mapPage.includes('role="application"') && mapPage.includes('OpenStreetMap contributors'), "interactive map has an accessible name and visible attribution"],
   [mapPage.includes("실제 행정경계가 아닙니다") && mapPage.includes("블루마운틴") && mapPage.includes('/areas/blue-mountains'), "map explains travel regions and separates the Blue Mountains"],
   [mapPlaces.every((place) => place.official.startsWith("https://") && place.map.includes("google.com/maps/dir") && Number.isFinite(place.coordinates.lat) && Number.isFinite(place.coordinates.lng)), "map places include official links, directions and coordinates"],
-  [mapJs.includes("history.pushState") && mapJs.includes("popstate") && mapJs.includes("URLSearchParams") && mapJs.includes("scrollIntoView"), "map selection is shareable and mobile-friendly"],
-  [mapCss.includes(".map-place-card[hidden]") && mapCss.includes("@media(max-width:600px)") && !mapCss.includes("!important"), "map layout has scoped responsive styles without important overrides"],
+  [mapJs.includes("history.pushState") && mapJs.includes("popstate") && mapJs.includes("URLSearchParams") && mapJs.includes("scrollIntoView") && mapJs.includes("tile.openstreetmap.org"), "map selection is shareable and uses real geographic tiles"],
+  [mapCss.includes(".map-place-card[hidden]") && mapCss.includes("@media(max-width:767px)") && mapCss.includes("grid-template-columns:repeat(3") && !mapCss.includes("transform:translateX"), "map layout has scoped three-to-one-column responsive styles"],
   [buildScript.includes('writeFile(join(out, "map.html")') && buildScript.includes('href="/map"') && buildScript.includes('"/map"'), "map route is built and linked from global navigation and sitemap"],
 ];
 for (const [ok, label] of assertions) {

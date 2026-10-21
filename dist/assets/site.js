@@ -22,9 +22,13 @@ document.querySelectorAll(".mobile-menu a").forEach((link) => link.addEventListe
 
 const route = document.querySelector("#day-route");
 function renderPlan(dayCount = 6) {
+  if (!route) return;
   const plan = siteContent.itineraries[dayCount];
-  document.querySelector("#itinerary-name").textContent = plan.name;
-  document.querySelector("#itinerary-summary").textContent = plan.summary;
+  const itineraryName = document.querySelector("#itinerary-name");
+  const itinerarySummary = document.querySelector("#itinerary-summary");
+  if (!itineraryName || !itinerarySummary) return;
+  itineraryName.textContent = plan.name;
+  itinerarySummary.textContent = plan.summary;
   route.innerHTML = plan.days.map((day, index) => `<li><b>DAY ${String(index + 1).padStart(2, "0")}</b><span>${day}</span></li>`).join("");
 }
 document.querySelectorAll("[data-plan]").forEach((button) => button.addEventListener("click", () => {
