@@ -8,6 +8,7 @@ import { loadMagazinePosts, magazineCategories, renderMagazineHubV2, renderMagaz
 import { renderFreeGuide, renderGuideComplete, renderGuideSample, renderPrivacy } from "./lead-pages.mjs";
 import { renderAbout, renderOperator, renderEditorialPolicy, renderPartnership, renderContact } from "./trust-pages.mjs";
 import { renderItineraryOverview } from "./itinerary-5n6d-overview.mjs";
+import { renderMapPage } from "./map-page.mjs";
 
 const root = process.cwd();
 const out = join(root, "dist");
@@ -19,11 +20,11 @@ leadConfig.consultationUrl = process.env.CONSULTATION_URL?.trim() || leadConfig.
 leadConfig.kakaoChannelUrl = process.env.KAKAO_CHANNEL_URL?.trim() || leadConfig.kakaoChannelUrl;
 const magazinePosts = await loadMagazinePosts(root);
 const headerLogo = `<a class="brand header-logo" href="/" aria-label="시드니픽 홈"><picture><source srcset="/public/images/brand/sydney-pick-logo.webp" type="image/webp"><img src="/public/images/brand/sydney-pick-logo.png" alt="시드니픽" width="1919" height="394"></picture></a>`;
-const commonFooter = `<footer class="site-footer"><div class="wrap footer-grid"><div class="footer-brand"><a class="brand" href="/" aria-label="시드니픽 홈"><strong>SYDNEY PICK</strong><span>시드니픽</span></a><p>한국인을 위한 시드니 자유여행 가이드.<br>더 적게 헤매고, 더 오래 기억하세요.</p></div><nav aria-label="브랜드"><strong>브랜드</strong><a href="/about">시드니픽 소개</a><a href="/about/hunsoo-lim">운영자 임헌수</a><a href="/editorial-policy">편집 기준</a></nav><nav aria-label="콘텐츠"><strong>콘텐츠</strong><a href="/itineraries">여행 일정</a><a href="/areas">지역별 픽</a><a href="/food">맛집·카페</a><a href="/travel-prep">여행 준비</a><a href="/shopping">쇼핑픽</a><a href="/magazine">픽 매거진</a></nav><nav aria-label="지원"><strong>지원</strong><a href="/free-guide">무료 여행 가이드</a><a href="/partnership">제휴·광고</a><a href="/contact">문의하기</a><a href="/privacy">개인정보처리방침</a></nav></div><div class="wrap footer-bottom"><p>© 2026 SYDNEY PICK. 변경 가능한 정보는 예약·방문 전 공식 채널을 확인하세요.</p><div><a href="https://www.sydney.com/" target="_blank" rel="noopener noreferrer">Destination NSW</a><a href="https://transportnsw.info/" target="_blank" rel="noopener noreferrer">Transport for NSW</a></div></div></footer>`;
+const commonFooter = `<footer class="site-footer"><div class="wrap footer-grid"><div class="footer-brand"><a class="brand" href="/" aria-label="시드니픽 홈"><strong>SYDNEY PICK</strong><span>시드니픽</span></a><p>한국인을 위한 시드니 자유여행 가이드.<br>더 적게 헤매고, 더 오래 기억하세요.</p></div><nav aria-label="브랜드"><strong>브랜드</strong><a href="/about">시드니픽 소개</a><a href="/about/hunsoo-lim">운영자 임헌수</a><a href="/editorial-policy">편집 기준</a></nav><nav aria-label="콘텐츠"><strong>콘텐츠</strong><a href="/itineraries">여행 일정</a><a href="/areas">지역별 픽</a><a href="/map">여행지도</a><a href="/food">맛집·카페</a><a href="/travel-prep">여행 준비</a><a href="/shopping">쇼핑픽</a><a href="/magazine">픽 매거진</a></nav><nav aria-label="지원"><strong>지원</strong><a href="/free-guide">무료 여행 가이드</a><a href="/partnership">제휴·광고</a><a href="/contact">문의하기</a><a href="/privacy">개인정보처리방침</a></nav></div><div class="wrap footer-bottom"><p>© 2026 SYDNEY PICK. 변경 가능한 정보는 예약·방문 전 공식 채널을 확인하세요.</p><div><a href="https://www.sydney.com/" target="_blank" rel="noopener noreferrer">Destination NSW</a><a href="https://transportnsw.info/" target="_blank" rel="noopener noreferrer">Transport for NSW</a></div></div></footer>`;
 function replaceSiteFooter(html) {
   const start = html.lastIndexOf("<footer");
   const end = html.indexOf("</footer>", start);
-  return start >= 0 && end >= 0 ? `${html.slice(0, start)}${commonFooter}${html.slice(end + 9)}` : html;
+  return start >= 0 && end >= 0 ? `${html.slice(0, start)}${commonFooter}${html.slice(end + 9)}` : html.replace("</body>", `${commonFooter}</body>`);
 }
 function normalizeImages(html) {
   let first = true;
@@ -40,7 +41,14 @@ function normalizeImages(html) {
 }
 function normalizeSiteHeader(html) {
   const wrapped = html.replace(/<header class="site-header">(?!\s*<div class="site-header__inner">)([\s\S]*?)<\/header>/, '<header class="site-header"><div class="site-header__inner">$1</div></header>');
-  return wrapped.replace(/<header class="site-header">[\s\S]*?<\/header>/, (siteHeader) => siteHeader.replace(/<a class="brand" href="\/" aria-label="시드니픽 홈"><strong>SYDNEY PICK<\/strong><span>시드니픽<\/span><\/a>/, headerLogo));
+  return wrapped.replace(/<header class="site-header">[\s\S]*?<\/header>/, (siteHeader) => {
+    let normalized = siteHeader.replace(/<a class="brand" href="\/" aria-label="시드니픽 홈"><strong>SYDNEY PICK<\/strong><span>시드니픽<\/span><\/a>/, headerLogo);
+    if (!normalized.includes('href="/map"')) {
+      normalized = normalized.replace(/(<nav class="desktop-nav"[^>]*>[\s\S]*?<a href="\/areas"[^>]*>지역별 픽<\/a>)/, '$1<a href="/map">여행지도</a>');
+      normalized = normalized.replace(/(<nav class="mobile-menu"[^>]*>[\s\S]*?<a href="\/areas"[^>]*>지역별 픽<\/a>)/, '$1<a href="/map">여행지도</a>');
+    }
+    return normalized;
+  });
 }
 function normalizeArticleHero(html) {
   return html.replace(/<header class="article-header wrap">([\s\S]*?)<\/header><figure class="article-hero"><img([^>]*)><figcaption>([^<]*)<\/figcaption><\/figure>/, (_match, content, imageAttributes, credit) => {
@@ -59,6 +67,7 @@ function render(html) {
   if (!output.includes('name="twitter:card"')) output = output.replace("</head>", '<meta name="twitter:card" content="summary_large_image"></head>');
   if (!output.includes('rel="manifest"')) output = output.replace("</head>", '<link rel="manifest" href="/public/site.webmanifest"></head>');
   if (!output.includes('/styles-vibrant.css')) output = output.replace("</head>", '<link rel="stylesheet" href="/styles-vibrant.css"></head>');
+  if (output.includes('/styles-map.css') && !output.includes('/styles-map-mobile.css')) output = output.replace("</head>", '<link rel="stylesheet" href="/styles-map-mobile.css"></head>');
   if (!output.includes('/assets/accessibility.js')) output = output.replace("</body>", '<script src="/assets/accessibility.js" defer></script></body>');
   return normalizeImages(normalizeArticleHero(normalizeSiteHeader(replaceSiteFooter(output))));
 }
@@ -79,7 +88,7 @@ await writeFile(join(out, "server", "index.js"), `export default {
     return response;
   },
 };\n`);
-for (const file of ["styles.css", "styles-vibrant.css", "robots.txt", "sitemap.xml"]) {
+for (const file of ["styles.css", "styles-vibrant.css", "styles-map.css", "styles-map-mobile.css", "robots.txt", "sitemap.xml"]) {
   try { await cp(join(root, file), join(out, file)); } catch (error) { if (error.code !== "ENOENT") throw error; }
 }
 await writeFile(join(out, "index.html"), render(await readFile(join(root, "index.html"), "utf8")));
@@ -88,6 +97,7 @@ await mkdir(join(out, "itineraries"), { recursive: true });
 const itinerary5n6dPage = (await readFile(join(root, "pages", "sydney-5n6d.html"), "utf8")).replace("<!-- ITINERARY_5N6D_OVERVIEW -->", renderItineraryOverview());
 await writeFile(join(out, "itineraries", "sydney-5n6d.html"), render(itinerary5n6dPage));
 await writeFile(join(out, "areas.html"), render(await readFile(join(root, "pages", "areas.html"), "utf8")));
+await writeFile(join(out, "map.html"), render(renderMapPage()));
 await mkdir(join(out, "areas"), { recursive: true });
 await writeFile(join(out, "areas", "circular-quay.html"), render(await readFile(join(root, "pages", "circular-quay.html"), "utf8")));
 await writeFile(join(out, "areas", "sydney-opera-house.html"), render(await readFile(join(root, "pages", "sydney-opera-house.html"), "utf8")));
@@ -134,6 +144,7 @@ await writeFile(join(out, "contact.html"), render(renderContact(leadConfig)));
 await writeFile(join(out, "404.html"), render(renderNotFound()));
 await writeFile(join(out, "rss.xml"), renderRss(magazinePosts, config.siteUrl));
 const publishedMagazineUrls = [
+  "/map",
   "/magazine",
   "/authors/editor",
   ...magazineCategories.filter(({ slug }) => magazinePosts.some((post) => post.status === "published" && post.category === slug)).map(({ slug }) => `/magazine/category/${slug}`),
@@ -168,6 +179,7 @@ await cp(join(root, "src", "shopping.js"), join(out, "assets", "shopping.js"));
 await cp(join(root, "src", "magazine.js"), join(out, "assets", "magazine.js"));
 await cp(join(root, "src", "free-guide.js"), join(out, "assets", "free-guide.js"));
 await cp(join(root, "src", "contact.js"), join(out, "assets", "contact.js"));
+await cp(join(root, "src", "map.js"), join(out, "assets", "map.js"));
 await cp(join(root, "src", "accessibility.js"), join(out, "assets", "accessibility.js"));
 try { await cp(join(root, "public"), join(out, "public"), { recursive: true }); } catch (error) { if (error.code !== "ENOENT") throw error; }
 console.log("Built dist/");

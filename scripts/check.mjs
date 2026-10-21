@@ -7,6 +7,7 @@ import { loadMagazinePosts, magazineCategories, renderMagazineHubV2, renderMagaz
 import { renderFreeGuide, renderGuideComplete, renderGuideSample, renderPrivacy } from "./lead-pages.mjs";
 import { renderAbout, renderOperator, renderEditorialPolicy, renderPartnership, renderContact } from "./trust-pages.mjs";
 import { itinerary5n6d, renderItineraryOverview } from "./itinerary-5n6d-overview.mjs";
+import { mapRegions, mapPlaces, renderMapPage } from "./map-page.mjs";
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("styles.css", "utf8");
@@ -60,6 +61,9 @@ const contact = renderContact(leadConfig);
 const contactJs = await readFile("src/contact.js", "utf8");
 const trustCss = await readFile("styles-trust.css", "utf8");
 const buildScript = await readFile("scripts/build.mjs", "utf8");
+const mapPage = renderMapPage();
+const mapJs = await readFile("src/map.js", "utf8");
+const mapCss = await readFile("styles-map.css", "utf8");
 await access("public/images/brand/sydney-pick-logo.png");
 await access("public/images/brand/sydney-pick-logo.webp");
 const assertions = [
@@ -94,6 +98,9 @@ const assertions = [
   [itineraryOverview.includes('id="plan-overview"') && itineraryOverview.includes('data-plan-download') && itineraryOverview.includes('data-mobile-plan="5"'), "5n6d overview renders desktop and mobile schedules"],
   [itineraryOverviewJs.includes("canvas.toBlob") && itineraryOverviewJs.includes("window.print()") && itineraryOverviewJs.includes("navigator.share"), "5n6d overview save print and share actions"],
   [pagesCss.includes(".plan-overview .plan-grid") && pagesCss.includes("@page{size:A4 landscape") && pagesCss.includes(".mobile-plan-card"), "5n6d overview scoped responsive and print styles"],
+  [itineraryDetail.includes('class="itinerary-infographic-section"') && itineraryDetail.includes('width="1086" height="1448"') && itineraryDetail.includes('download="시드니픽-시드니-5박6일-일정표.png"'), "5n6d downloadable infographic markup"],
+  [itineraryDetail.includes("시드니픽 처음 가는 시드니 5박 6일 자유여행 일정 인포그래픽") && itineraryDetail.includes("<figcaption>") && itineraryDetail.includes('class="itinerary-infographic-summary"'), "5n6d infographic accessibility and text alternative"],
+  [pagesCss.includes(".itinerary-infographic-figure picture") && pagesCss.includes("aspect-ratio:3/4") && pagesCss.includes("object-fit:contain"), "5n6d infographic ratio and containment styles"],
   [[areasHub, circularQuay, operaHouse].every((page) => (page.match(/<h1(?:\s|>)/g) || []).length === 1), "one H1 per area page"],
   [areasHub.includes("ItemList") && circularQuay.includes('"@type":"Place"') && operaHouse.includes('"@type":"TouristAttraction"'), "area structured data"],
   [circularQuay.includes('"@type":"FAQPage"') && operaHouse.includes('"@type":"FAQPage"'), "visible FAQ schema"],
@@ -187,6 +194,13 @@ const assertions = [
   [contactJs.includes("{detail:{event}}") && !contactJs.includes("detail:{event,email") && !contactJs.includes("detail:{event,name"), "contact analytics excludes personal data"],
   [trustCss.includes('@media(max-width:600px)') && trustCss.includes('aspect-ratio:4/5') && trustCss.includes('aspect-ratio:16/10'), "trust pages responsive layout and varied image ratios"],
   [["/about","/about/hunsoo-lim","/editorial-policy","/partnership","/contact","/privacy"].every((path) => buildScript.includes(`href="${path}"`)), "global footer contains all trust links"],
+  [mapRegions.length === 9 && mapPlaces.length === 27 && mapRegions.every(({ id }) => mapPlaces.filter((place) => place.region === id).length >= 3), "map has nine travel regions with at least three places each"],
+  [mapPage.includes('aria-label="시드니 여행 권역 위치 안내도"') || mapPage.includes('aria-labelledby="sydney-map-title sydney-map-desc"'), "map SVG has an accessible name and description"],
+  [mapPage.includes("실제 행정경계가 아닙니다") && mapPage.includes("블루마운틴") && mapPage.includes('/areas/blue-mountains'), "map explains travel regions and separates the Blue Mountains"],
+  [mapPlaces.every((place) => place.official.startsWith("https://") && place.map.includes("google.com/maps/dir") && Number.isFinite(place.coordinates.lat) && Number.isFinite(place.coordinates.lng)), "map places include official links, directions and coordinates"],
+  [mapJs.includes("history.pushState") && mapJs.includes("popstate") && mapJs.includes("URLSearchParams") && mapJs.includes("scrollIntoView"), "map selection is shareable and mobile-friendly"],
+  [mapCss.includes(".map-place-card[hidden]") && mapCss.includes("@media(max-width:600px)") && !mapCss.includes("!important"), "map layout has scoped responsive styles without important overrides"],
+  [buildScript.includes('writeFile(join(out, "map.html")') && buildScript.includes('href="/map"') && buildScript.includes('"/map"'), "map route is built and linked from global navigation and sitemap"],
 ];
 for (const [ok, label] of assertions) {
   if (!ok) throw new Error(`Check failed: ${label}`);
@@ -194,6 +208,8 @@ for (const [ok, label] of assertions) {
 }
 await access("public/og.png");
 await access("public/favicon.svg");
+await access("public/images/itineraries/sydney-5n6d-itinerary-infographic.png");
+await access("public/images/itineraries/sydney-5n6d-itinerary-infographic.webp");
 await access("robots.txt");
 await access("sitemap.xml");
 await access("integrations/google-apps-script.example.js");
